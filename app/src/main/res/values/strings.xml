@@ -1,3 +1,16 @@
 <resources>
     <string name="app_name">DemoProject</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="enter_your_email_address_and_password_to_continue">Enter your email address and password \nto continue</string>
+    <string name="welcome_to_clientdex">Welcome to ClientDex</string>
+    <string name="email">Email</string>
+    <string name="password">Password</string>
+    <string name="log_in">Log In</string>
+    <string name="welcome_john"><font color="#000000">WELCOME</font> <font color="#007AFF">JOHN</font></string>
+    <string name="activities_tips"><![CDATA[Activities & Tips]]></string>
+    <string name="say_share"><![CDATA[Say & Share]]></string>
+    <string name="training">Training</string>
+    <string name="events">Events</string>
+    <string name="track_it">Track It</string>
 </resources>

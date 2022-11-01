@@ -1,0 +1,224 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#EFF2F9"
+    android:paddingStart="20dp"
+    android:paddingEnd="20dp"
+    tools:context=".HomeFragment">
+
+    <!-- TODO: Update blank fragment layout -->
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="43dp"
+        android:src="@drawable/ic_group_10158"
+
+        >
+
+    </ImageView>
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/welcome_john"
+        android:textSize="22sp"
+        android:layout_marginTop="85dp"
+        android:textStyle="bold"
+
+        >
+
+    </TextView>
+    <FrameLayout
+        android:layout_width="160dp"
+        android:layout_height="108dp"
+        android:backgroundTint="@color/white"
+        android:background="@drawable/hometabs"
+        android:layout_marginTop="155dp"
+
+        >
+
+    </FrameLayout>
+    <FrameLayout
+        android:layout_width="160dp"
+        android:layout_height="108dp"
+        android:backgroundTint="@color/white"
+        android:background="@drawable/hometabs"
+        android:layout_marginTop="155dp"
+        android:paddingStart="20dp"
+
+        >
+<ImageView
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:src="@drawable/ic_do_today"
+    android:layout_marginTop="10dp"
+    >
+
+</ImageView>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="70dp"
+            android:text="Do Today"
+            android:textSize="16sp"
+            android:textColor="#060606"
+            android:textStyle="bold"
+
+            >
+
+        </TextView>
+    </FrameLayout>
+    <FrameLayout
+        android:layout_width="160dp"
+        android:layout_height="108dp"
+        android:backgroundTint="@color/white"
+        android:background="@drawable/hometabs"
+        android:layout_marginTop="155dp"
+        android:layout_gravity="end"
+        android:paddingStart="20dp"
+
+        >
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_activities___tips"
+            android:layout_marginTop="10dp"
+            >
+
+        </ImageView>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="70dp"
+            android:text="@string/activities_tips"
+            android:textSize="16sp"
+            android:textColor="#060606"
+            android:textStyle="bold"
+
+            >
+
+        </TextView>
+    </FrameLayout>
+    <FrameLayout
+        android:layout_width="160dp"
+        android:layout_height="108dp"
+        android:backgroundTint="@color/white"
+        android:background="@drawable/hometabs"
+        android:layout_marginTop="283dp"
+        android:paddingStart="20dp"
+        >
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_track_it"
+            android:layout_marginTop="10dp"
+            >
+
+        </ImageView>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="70dp"
+            android:text="@string/track_it"
+            android:textSize="16sp"
+            android:textColor="#060606"
+            android:textStyle="bold"
+
+            >
+
+        </TextView>
+    </FrameLayout>
+    <FrameLayout
+        android:layout_width="160dp"
+        android:layout_height="108dp"
+        android:backgroundTint="@color/white"
+        android:background="@drawable/hometabs"
+        android:layout_marginTop="283dp"
+        android:layout_gravity="end"
+        android:paddingStart="20dp"
+
+        >
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_say___share"
+            android:layout_marginTop="10dp"
+            >
+
+        </ImageView>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="70dp"
+            android:text="@string/events"
+            android:textSize="16sp"
+            android:textColor="#060606"
+            android:textStyle="bold"
+
+            >
+
+        </TextView>
+    </FrameLayout>
+    <FrameLayout
+        android:layout_width="160dp"
+        android:layout_height="108dp"
+        android:backgroundTint="@color/white"
+        android:background="@drawable/hometabs"
+        android:layout_marginTop="411dp"
+        android:paddingStart="20dp"
+        >
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_training"
+            android:layout_marginTop="10dp"
+            >
+
+        </ImageView>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="70dp"
+            android:text="@string/training"
+            android:textSize="16sp"
+            android:textColor="#060606"
+            android:textStyle="bold"
+
+            >
+
+        </TextView>
+    </FrameLayout>
+    <FrameLayout
+        android:layout_width="160dp"
+        android:layout_height="108dp"
+        android:backgroundTint="@color/white"
+        android:background="@drawable/hometabs"
+        android:layout_marginTop="411dp"
+        android:layout_gravity="end"
+        android:paddingStart="20dp"
+        >
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_say___share_1"
+            android:layout_marginTop="10dp"
+            >
+
+        </ImageView>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="70dp"
+            android:text="@string/say_share"
+            android:textSize="16sp"
+            android:textColor="#060606"
+            android:textStyle="bold"
+
+            >
+
+        </TextView>
+    </FrameLayout>
+
+
+</FrameLayout>

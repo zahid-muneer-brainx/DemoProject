@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="343dp"
+    android:layout_height="107dp"
+    android:layout_gravity="center_horizontal"
+    android:paddingTop="19dp"
+    android:paddingStart="10dp"
+    android:layout_marginTop="16dp"
+    >
+<ImageView
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:src="@drawable/ic_rectangle_1703"
+    >
+
+</ImageView>
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Zahid Muneer"
+        android:layout_marginStart="73dp"
+        android:textSize="18dp"
+        android:textColor="#29304D"
+        android:textStyle="bold"
+        >
+
+    </TextView>
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="zaidmuneer25@gmail.com"
+        android:layout_marginStart="73dp"
+        android:textSize="13dp"
+        android:textColor="#29304D"
+
+        android:layout_marginTop="29dp"
+        >
+
+    </TextView>
+</FrameLayout>

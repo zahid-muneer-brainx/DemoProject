@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#D4DAE4"
+    tools:context=".UploadFragment">
+
+    <!-- TODO: Update blank fragment layout -->
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Update Profile"
+        android:textStyle="bold"
+        android:layout_marginTop="22dp"
+        android:layout_marginStart="56dp"
+        android:textSize="25dp"
+        />
+    <FrameLayout
+        android:layout_width="75dp"
+        android:layout_height="75dp"
+        android:layout_marginTop="88dp"
+        android:layout_gravity="center_horizontal"
+        >
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+
+
+            android:src="@drawable/ic_baseline_account_circle_24"
+            >
+
+        </ImageView>
+        <ImageView
+            android:layout_width="24.66dp"
+            android:layout_height="24.66dp"
+            android:layout_gravity="bottom|right"
+            android:src="@drawable/ic_group_3915"
+            >
+
+        </ImageView>
+    </FrameLayout>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="27dp"
+        android:layout_marginTop="183dp"
+        android:text="NAME"
+        android:textColor="#9929304D"
+
+        android:textSize="12dp">
+
+    </TextView>
+    <EditText
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="207dp"
+        android:background="#FFFFFF"
+        android:paddingStart="20dp"
+        android:paddingTop="27dp"
+        android:paddingBottom="18dp"
+        android:hint="Zahid Muneer"
+        android:textColor="#29304D"
+        
+        >
+
+    </EditText>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="27dp"
+        android:layout_marginTop="287dp"
+        android:text="PERSONAL NUMBER"
+        android:textColor="#9929304D"
+
+        android:textSize="12dp">
+
+    </TextView>
+    <EditText
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="311dp"
+        android:background="#FFFFFF"
+        android:paddingStart="20dp"
+        android:paddingTop="27dp"
+        android:paddingBottom="18dp"
+        android:hint="+1 (613) 704-8836"
+        android:textColor="#29304D"
+        >
+
+    </EditText>
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="65dp"
+        android:layout_gravity="bottom|center"
+        android:background="@color/white"
+        >
+        <androidx.appcompat.widget.AppCompatButton
+            android:layout_width="343dp"
+            android:layout_height="45dp"
+            android:layout_gravity="center_horizontal|center_vertical"
+
+            android:background="@drawable/login_background"
+            android:text="UPLOAD"
+            android:textColor="#FFFFFF"
+
+            >
+
+        </androidx.appcompat.widget.AppCompatButton>
+    </FrameLayout>
+</FrameLayout>
