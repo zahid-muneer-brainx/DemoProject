@@ -1,59 +1,103 @@
 package com.example.demoproject
 
+import DataStoreViewModel
+import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Button
+import android.widget.EditText
+import android.widget.Toast
+import androidx.fragment.app.viewModels
+import androidx.lifecycle.ViewModelProvider
+import com.example.demoproject.databinding.FragmentLoginBinding
+import dagger.hilt.InstallIn
+import dagger.hilt.android.components.FragmentComponent
+import dagger.hilt.android.lifecycle.HiltViewModel
+import java.util.regex.Pattern
+import javax.inject.Inject
 
-// TODO: Rename parameter arguments, choose names that match
-// the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-private const val ARG_PARAM1 = "param1"
-private const val ARG_PARAM2 = "param2"
+class LoginFragment @Inject constructor() : Fragment() {
 
-/**
- * A simple [Fragment] subclass.
- * Use the [LoginFragment.newInstance] factory method to
- * create an instance of this fragment.
- */
-class LoginFragment : Fragment() {
+    lateinit var  Model: LoginViewModel
+    lateinit var binding:FragmentLoginBinding
+    lateinit var email:EditText
+    lateinit var password:EditText
+    lateinit var loginbtn:Button
+
     // TODO: Rename and change types of parameters
     private var param1: String? = null
     private var param2: String? = null
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        arguments?.let {
-            param1 = it.getString(ARG_PARAM1)
-            param2 = it.getString(ARG_PARAM2)
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+
+        super.onViewCreated(view, savedInstanceState)
+        Model=ViewModelProvider(requireActivity())[LoginViewModel::class.java]
+        ResponseObserver(Model)
+        loginbtn.setOnClickListener {
+
+
+            if (validateEmailPassword(email.text.toString(), password.text.toString())) {
+
+                    Model.login(email.text.toString(),password.text.toString())
+                }
+
+                else{
+                    Toast.makeText(
+                        requireContext(),
+                        "Invalid Email or Password",
+                        Toast.LENGTH_SHORT
+                    ).show()
+                }
+
         }
     }
-
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_login, container, false)
-    }
+        binding=FragmentLoginBinding.inflate(layoutInflater)
+        email=binding.useremail
+        password=binding.userpassword
+        loginbtn=binding.loginbtn
 
-    companion object {
-        /**
-         * Use this factory method to create a new instance of
-         * this fragment using the provided parameters.
-         *
-         * @param param1 Parameter 1.
-         * @param param2 Parameter 2.
-         * @return A new instance of fragment LoginFragment.
-         */
-        // TODO: Rename and change types and number of parameters
-        @JvmStatic
-        fun newInstance(param1: String, param2: String) =
-            LoginFragment().apply {
-                arguments = Bundle().apply {
-                    putString(ARG_PARAM1, param1)
-                    putString(ARG_PARAM2, param2)
+        return binding.root
+    }
+    private fun ResponseObserver(model:LoginViewModel)
+    {
+        model.serverresponse.observe(viewLifecycleOwner){ serverResponse ->
+            if(serverResponse==null) {
+                Toast.makeText(requireContext(), "Logged in Failure", Toast.LENGTH_SHORT).show()
+            } else {
+
+                Toast.makeText(requireContext(), "Logged in Successful"+serverResponse, Toast.LENGTH_SHORT).show()
+
+                activity?.let {
+                    val intent = Intent(it, MainActivity2::class.java)
+                    it.startActivity(intent)
                 }
             }
+        }
     }
+    private fun validateEmailPassword(email:String,password:String):Boolean
+    {
+        if(!isEmailValid(email))
+            return false
+        else return password.length >= 6
+
+    }
+    fun isEmailValid(email: String): Boolean {
+        return Pattern.compile(
+            "^(([\\w-]+\\.)+[\\w-]+|([a-zA-Z]|[\\w-]{2,}))@"
+                    + "((([0-1]?[0-9]{1,2}|25[0-5]|2[0-4][0-9])\\.([0-1]?"
+                    + "[0-9]{1,2}|25[0-5]|2[0-4][0-9])\\."
+                    + "([0-1]?[0-9]{1,2}|25[0-5]|2[0-4][0-9])\\.([0-1]?"
+                    + "[0-9]{1,2}|25[0-5]|2[0-4][0-9]))|"
+                    + "([a-zA-Z]+[\\w-]+\\.)+[a-zA-Z]{2,4})$"
+        ).matcher(email).matches()
+    }
+
 }

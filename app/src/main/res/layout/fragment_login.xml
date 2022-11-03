@@ -36,6 +36,7 @@
 
   </TextView>
   <EditText
+      android:id="@+id/useremail"
       android:layout_width="343dp"
       android:layout_height="55dp"
       android:layout_marginTop="295dp"
@@ -49,6 +50,7 @@
 
   </EditText>
   <EditText
+      android:id="@+id/userpassword"
       android:layout_width="343dp"
       android:layout_height="55dp"
       android:layout_marginTop="364dp"
@@ -62,6 +64,7 @@
 
   </EditText>
   <Button
+      android:id="@+id/loginbtn"
       android:layout_width="343dp"
       android:layout_height="45dp"
       android:layout_marginTop="459dp"

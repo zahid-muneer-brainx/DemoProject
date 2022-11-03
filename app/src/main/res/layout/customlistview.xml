@@ -15,6 +15,7 @@
 
 </ImageView>
     <TextView
+        android:id="@+id/contactname"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Zahid Muneer"
@@ -26,6 +27,7 @@
 
     </TextView>
     <TextView
+        android:id="@+id/contactemail"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="zaidmuneer25@gmail.com"
