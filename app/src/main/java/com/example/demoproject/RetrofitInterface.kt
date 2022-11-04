@@ -11,8 +11,8 @@ interface RetrofitInterface {
         fun login(@Body info: UserInfo): Call<ServerResponse?>
         @Headers("Content-type: application/json; charset=UTF-8")
         @GET("/api/v1/card_contacts")
-        fun allContacts(@HeaderMap headers: RequestHeaders): Call<ArrayList<ListingData>>
+        fun allContacts(@HeaderMap headers: Map<String, String>): Call<ListingData>
         @Headers("Content-type: application/json; charset=UTF-8")
         @PUT("/api/v1/users/sign_in.json")
-        fun update(@HeaderMap headers: RequestHeaders, @Body info: UserInfo)
+        fun update(@HeaderMap headers: Map<String, String>, @Body info: UserInfo)
 }

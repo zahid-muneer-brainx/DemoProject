@@ -9,7 +9,7 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 
 class ListingViewAdapter(
-    private val contactDataArrayList:ArrayList<ListingData>, private val mcontext: Context
+    private val contactDataArrayList:ListingData, private val mcontext: Context
 ) :
     RecyclerView.Adapter<ListingViewAdapter.ViewHolder>() {
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int):ListingViewAdapter.ViewHolder{
@@ -23,13 +23,13 @@ class ListingViewAdapter(
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         // Set the data to textview from our modal class.
-        holder.NameTV.setText(contactDataArrayList[position].cardContacts.full_name)
-        holder.emailTV.setText(contactDataArrayList[position].cardContacts.email)
+        holder.NameTV.setText(contactDataArrayList.cardContacts[position].full_name)
+        holder.emailTV.setText(contactDataArrayList.cardContacts[position].email)
     }
 
     override fun getItemCount(): Int {
         // this method returns the size of recyclerview
-        return contactDataArrayList.size
+        return contactDataArrayList.cardContacts.size
     }
 
     // View Holder Class to handle Recycler View.

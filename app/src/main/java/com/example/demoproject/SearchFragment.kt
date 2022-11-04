@@ -1,5 +1,6 @@
 package com.example.demoproject
 
+import android.content.Context
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -14,9 +15,9 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 class SearchFragment @Inject constructor(): Fragment() {
-    lateinit var dataStoreManager: PreferenceDataStore
+
     lateinit var Model:ListingViewModel
-    lateinit var requestHeaders:RequestHeaders
+
     private var recyclerViewAdapter: ListingViewAdapter? = null
     lateinit var listRT:RecyclerView
     lateinit var binding: FragmentSearchBinding
@@ -25,17 +26,7 @@ class SearchFragment @Inject constructor(): Fragment() {
     override fun onViewCreated(view: View,savedInstanceState: Bundle?) {
         super.onViewCreated(view,savedInstanceState)
         Model=ViewModelProvider(requireActivity())[ListingViewModel::class.java]
-        lifecycleScope.launch {
-            preferenceDataStore.getFromDataStore().collect {
-                requestHeaders = RequestHeaders(
-                    (it.uid),
-                    (it.access_token),
-                    (it.client)
-                )
-                println(requestHeaders.toString())
-            }
-        }
-        Model.getlist(requestHeaders)
+        Model.getlist()
 
         upload(Model)
     }
@@ -54,7 +45,7 @@ class SearchFragment @Inject constructor(): Fragment() {
  private fun upload(Model:ListingViewModel)
  {
      Model.recyclerDataArrayList.observe(viewLifecycleOwner){
-         for(i in Model.recyclerDataArrayList.value?.indices!!)
+         for(i in Model.recyclerDataArrayList.value?.cardContacts?.indices!!)
          {
              println("1111111111111111111111")
              recyclerViewAdapter =

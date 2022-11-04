@@ -5,7 +5,7 @@ import java.io.Serializable
 
 data class ListingData(
     @SerializedName("card_contacts")
-    val cardContacts: CardContacts,
+    val cardContacts: ArrayList<CardContacts>,
     @SerializedName("meta")
     val meta: Meta
 ):Serializable

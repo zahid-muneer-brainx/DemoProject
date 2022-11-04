@@ -29,7 +29,7 @@ class PreferenceDataStore(val context: Context) {
 
         }
     }
-    suspend fun getFromDataStore() = context.dataStore.data.map {
+    fun getFromDataStore() = context.dataStore.data.map {
         RequestHeaders(
              uid = it[UID]?:"",
             access_token = it[ACCESSTOKEN]?:"",
