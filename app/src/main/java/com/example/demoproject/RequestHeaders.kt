@@ -11,6 +11,5 @@ data class RequestHeaders(
     @SerializedName("client")
     val client:String
 
-
 ):Serializable {
 }

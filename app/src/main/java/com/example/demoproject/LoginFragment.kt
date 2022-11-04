@@ -1,24 +1,20 @@
 package com.example.demoproject
 
-import DataStoreViewModel
 import android.content.Intent
+import android.content.SharedPreferences
 import android.os.Bundle
-import android.util.Log
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import android.widget.EditText
 import android.widget.Toast
-import androidx.fragment.app.viewModels
+import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import com.example.demoproject.databinding.FragmentLoginBinding
-import dagger.hilt.InstallIn
-import dagger.hilt.android.components.FragmentComponent
-import dagger.hilt.android.lifecycle.HiltViewModel
 import java.util.regex.Pattern
 import javax.inject.Inject
+
 
 class LoginFragment @Inject constructor() : Fragment() {
 
@@ -27,6 +23,7 @@ class LoginFragment @Inject constructor() : Fragment() {
     lateinit var email:EditText
     lateinit var password:EditText
     lateinit var loginbtn:Button
+
 
     // TODO: Rename and change types of parameters
     private var param1: String? = null
@@ -42,9 +39,9 @@ class LoginFragment @Inject constructor() : Fragment() {
 
             if (validateEmailPassword(email.text.toString(), password.text.toString())) {
 
-                    Model.login(email.text.toString(),password.text.toString())
-                }
+                Model.login(email.text.toString(),password.text.toString())
 
+                }
                 else{
                     Toast.makeText(
                         requireContext(),
@@ -74,7 +71,11 @@ class LoginFragment @Inject constructor() : Fragment() {
             } else {
 
                 Toast.makeText(requireContext(), "Logged in Successful"+serverResponse, Toast.LENGTH_SHORT).show()
-
+                val settings: SharedPreferences =
+                    this.requireActivity().getSharedPreferences("login", 0) // 0 - for private mode
+                val editor = settings.edit()
+                editor.putBoolean("hasLoggedIn", true)
+                editor.apply()
                 activity?.let {
                     val intent = Intent(it, MainActivity2::class.java)
                     it.startActivity(intent)
@@ -99,5 +100,6 @@ class LoginFragment @Inject constructor() : Fragment() {
                     + "([a-zA-Z]+[\\w-]+\\.)+[a-zA-Z]{2,4})$"
         ).matcher(email).matches()
     }
+
 
 }
