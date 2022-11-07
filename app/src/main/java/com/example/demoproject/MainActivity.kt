@@ -17,6 +17,7 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
+        supportActionBar?.hide()
         val settings = getSharedPreferences("login", 0)
         val hasLoggedIn = settings.getBoolean("hasLoggedIn", false)
 

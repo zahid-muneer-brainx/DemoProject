@@ -9,6 +9,4 @@ data class UserInfo(
     val email: String,
     @SerializedName("password")
     val password: String
-
-
 ) : Serializable

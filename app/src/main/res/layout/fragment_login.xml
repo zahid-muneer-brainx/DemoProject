@@ -59,10 +59,10 @@
         android:layout_marginTop="364dp"
         android:background="@drawable/rounded_corner_edittext"
         android:hint="@string/password"
+        android:inputType="textPassword"
         android:padding="16dp"
-        android:textColor="#929498"
 
-        >
+        android:textColor="#929498">
 
     </EditText>
 

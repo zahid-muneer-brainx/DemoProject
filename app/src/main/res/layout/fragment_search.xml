@@ -3,7 +3,10 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".SearchFragment">
+    tools:context=".SearchFragment"
+    android:background="#D4DAE4"
+    >
+
 
     <SearchView
         android:id="@+id/sv1"
@@ -25,7 +28,8 @@
         android:id="@+id/RTview"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="88dp"
+        android:layout_marginTop="82dp"
+        android:layout_gravity="center_horizontal"
 
         >
 
