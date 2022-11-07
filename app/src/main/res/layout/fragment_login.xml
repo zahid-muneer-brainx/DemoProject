@@ -5,76 +5,79 @@
     android:layout_height="match_parent"
     tools:context=".LoginFragment">
 
-  <ImageView
-      android:layout_width="117dp"
-      android:layout_height="77dp"
-      android:layout_marginTop="59dp"
-      android:src="@drawable/group_7745"
-      >
+    <ImageView
+        android:layout_width="117dp"
+        android:layout_height="77dp"
+        android:layout_marginTop="59dp"
+        android:src="@drawable/group_7745">
 
-  </ImageView>
-  <TextView
-      android:layout_width="343dp"
-      android:layout_height="34dp"
-      android:layout_marginTop="171dp"
-      android:layout_gravity="center_horizontal"
-      android:textSize="25sp"
-      android:textStyle="bold"
-      android:textColor="#29304D"
-    android:text="@string/welcome_to_clientdex">
+    </ImageView>
 
-  </TextView>
-  <TextView
-      android:layout_width="343dp"
-      android:layout_height="46dp"
-      android:layout_gravity="center_horizontal"
-      android:layout_marginTop="211dp"
-      android:text="@string/enter_your_email_address_and_password_to_continue"
-      android:textSize="16sp"
-      android:textColor="#5D687E"
-    >
+    <TextView
+        android:layout_width="343dp"
+        android:layout_height="34dp"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="171dp"
+        android:text="@string/welcome_to_clientdex"
+        android:textColor="#29304D"
+        android:textSize="25sp"
+        android:textStyle="bold">
 
-  </TextView>
-  <EditText
-      android:id="@+id/useremail"
-      android:layout_width="343dp"
-      android:layout_height="55dp"
-      android:layout_marginTop="295dp"
-      android:layout_gravity="center_horizontal"
-      android:hint="@string/email"
-      android:textColor="#929498"
-      android:padding="16dp"
-      android:background="@drawable/rounded_corner_edittext"
+    </TextView>
 
-    >
+    <TextView
+        android:layout_width="343dp"
+        android:layout_height="46dp"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="211dp"
+        android:text="@string/enter_your_email_address_and_password_to_continue"
+        android:textColor="#5D687E"
+        android:textSize="16sp">
 
-  </EditText>
-  <EditText
-      android:id="@+id/userpassword"
-      android:layout_width="343dp"
-      android:layout_height="55dp"
-      android:layout_marginTop="364dp"
-      android:layout_gravity="center_horizontal"
-      android:hint="@string/password"
-      android:textColor="#929498"
-      android:padding="16dp"
-      android:background="@drawable/rounded_corner_edittext"
+    </TextView>
 
-      >
+    <EditText
+        android:id="@+id/useremail"
+        android:layout_width="343dp"
+        android:layout_height="55dp"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="295dp"
+        android:background="@drawable/rounded_corner_edittext"
+        android:hint="@string/email"
+        android:padding="16dp"
+        android:textColor="#929498"
 
-  </EditText>
-  <Button
-      android:id="@+id/loginbtn"
-      android:layout_width="343dp"
-      android:layout_height="45dp"
-      android:layout_marginTop="459dp"
-      android:layout_gravity="center_horizontal"
+        >
 
-       android:background="@drawable/login_background"
-       android:text="@string/log_in"
-      android:textAllCaps="false"
+    </EditText>
 
-      >
+    <EditText
+        android:id="@+id/userpassword"
+        android:layout_width="343dp"
+        android:layout_height="55dp"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="364dp"
+        android:background="@drawable/rounded_corner_edittext"
+        android:hint="@string/password"
+        android:padding="16dp"
+        android:textColor="#929498"
 
-  </Button>
+        >
+
+    </EditText>
+
+    <Button
+        android:id="@+id/loginbtn"
+        android:layout_width="343dp"
+        android:layout_height="45dp"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="459dp"
+
+        android:background="@drawable/login_background"
+        android:text="@string/log_in"
+        android:textAllCaps="false"
+
+        >
+
+    </Button>
 </FrameLayout>

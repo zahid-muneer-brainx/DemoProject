@@ -5,15 +5,15 @@ import java.io.Serializable
 
 data class CardContacts(
     @SerializedName("id")
-    val id:Int,
+    val id: Int,
     @SerializedName("full_name")
-    val full_name:String,
+    val full_name: String,
     @SerializedName("phone_number")
-    val phone_number:String,
+    val phone_number: String,
     @SerializedName("email")
-    val email:String,
+    val email: String,
     @SerializedName("date")
-    val date:String,
+    val date: String,
     @SerializedName("created_at")
-    val created_at:String
-): Serializable
+    val created_at: String
+) : Serializable

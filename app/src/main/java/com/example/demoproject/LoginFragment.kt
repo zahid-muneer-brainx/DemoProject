@@ -21,10 +21,10 @@ import javax.inject.Inject
 class LoginFragment @Inject constructor() : Fragment() {
 
 
-    lateinit var binding:FragmentLoginBinding
-    lateinit var email:EditText
-    lateinit var password:EditText
-    lateinit var loginbtn:Button
+    lateinit var binding: FragmentLoginBinding
+    lateinit var email: EditText
+    lateinit var password: EditText
+    lateinit var loginbtn: Button
     private val Model: LoginViewModel by viewModels()
 
     // TODO: Rename and change types of parameters
@@ -40,38 +40,42 @@ class LoginFragment @Inject constructor() : Fragment() {
 
             if (validateEmailPassword(email.text.toString(), password.text.toString())) {
 
-                Model.login(email.text.toString(),password.text.toString())
+                Model.login(email.text.toString(), password.text.toString())
 
-                }
-                else{
-                    Toast.makeText(
-                        requireContext(),
-                        "Invalid Email or Password",
-                        Toast.LENGTH_SHORT
-                    ).show()
-                }
+            } else {
+                Toast.makeText(
+                    requireContext(),
+                    "Invalid Email or Password",
+                    Toast.LENGTH_SHORT
+                ).show()
+            }
 
         }
     }
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        binding=FragmentLoginBinding.inflate(layoutInflater)
-        email=binding.useremail
-        password=binding.userpassword
-        loginbtn=binding.loginbtn
+        binding = FragmentLoginBinding.inflate(layoutInflater)
+        email = binding.useremail
+        password = binding.userpassword
+        loginbtn = binding.loginbtn
 
         return binding.root
     }
-    private fun ResponseObserver(model:LoginViewModel)
-    {
-        model.serverresponse.observe(viewLifecycleOwner){ serverResponse ->
-            if(serverResponse==null) {
+
+    private fun ResponseObserver(model: LoginViewModel) {
+        model.serverresponse.observe(viewLifecycleOwner) { serverResponse ->
+            if (serverResponse == null) {
                 Toast.makeText(requireContext(), "Logged in Failure", Toast.LENGTH_SHORT).show()
             } else {
 
-                Toast.makeText(requireContext(), "Logged in Successful"+serverResponse, Toast.LENGTH_SHORT).show()
+                Toast.makeText(
+                    requireContext(),
+                    "Logged in Successful" + serverResponse,
+                    Toast.LENGTH_SHORT
+                ).show()
                 val settings: SharedPreferences =
                     this.requireActivity().getSharedPreferences("login", 0) // 0 - for private mode
                 val editor = settings.edit()
@@ -84,13 +88,14 @@ class LoginFragment @Inject constructor() : Fragment() {
             }
         }
     }
-    private fun validateEmailPassword(email:String,password:String):Boolean
-    {
-        if(!isEmailValid(email))
+
+    private fun validateEmailPassword(email: String, password: String): Boolean {
+        if (!isEmailValid(email))
             return false
         else return password.length >= 6
 
     }
+
     fun isEmailValid(email: String): Boolean {
         return Pattern.compile(
             "^(([\\w-]+\\.)+[\\w-]+|([a-zA-Z]|[\\w-]{2,}))@"

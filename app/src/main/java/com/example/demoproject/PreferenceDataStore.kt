@@ -13,6 +13,7 @@ import javax.inject.Singleton
 class PreferenceDataStore(val context: Context) {
 
     private val Context.dataStore: DataStore<Preferences> by preferencesDataStore(name = "USER_DATASTORE")
+
     companion object {
 
         val UID = stringPreferencesKey("uid")
@@ -20,6 +21,7 @@ class PreferenceDataStore(val context: Context) {
         val CLIENT = stringPreferencesKey("client")
 
     }
+
     suspend fun savetoDataStore(requestHeaders: RequestHeaders) {
         context.dataStore.edit {
 
@@ -29,11 +31,12 @@ class PreferenceDataStore(val context: Context) {
 
         }
     }
+
     fun getFromDataStore() = context.dataStore.data.map {
         RequestHeaders(
-             uid = it[UID]?:"",
-            access_token = it[ACCESSTOKEN]?:"",
-            client = it[CLIENT]?:""
+            uid = it[UID] ?: "",
+            access_token = it[ACCESSTOKEN] ?: "",
+            client = it[CLIENT] ?: ""
         )
     }
 }

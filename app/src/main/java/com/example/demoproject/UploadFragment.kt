@@ -23,48 +23,49 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import com.example.demoproject.databinding.FragmentUploadBinding
 import dagger.hilt.android.AndroidEntryPoint
-import okio.IOException
 import java.io.ByteArrayOutputStream
+import java.io.IOException
 import javax.inject.Inject
 
 
 @AndroidEntryPoint
-class UploadFragment @Inject constructor(): Fragment() {
-    private  val PICK_IMAGE = 100
-    private  val STORAGE_PERMISSION_CODE = 101
+class UploadFragment @Inject constructor() : Fragment() {
+    private val PICK_IMAGE = 100
+    private val STORAGE_PERMISSION_CODE = 101
     lateinit var binding: FragmentUploadBinding
-     lateinit var name:EditText
-     lateinit var number:EditText
-     lateinit var image:ImageView
-     lateinit var came:ImageView
-     lateinit var updatebtn:Button
-     var imageString:String="data:image/png;base64,"
+    lateinit var name: EditText
+    lateinit var number: EditText
+    lateinit var image: ImageView
+    lateinit var came: ImageView
+    lateinit var updatebtn: Button
+    var imageString: String = "data:image/png;base64,"
     private val Model: UpdateProfileViewModel by viewModels()
     var imageUri: Uri? = null
-    override fun onViewCreated(view: View,savedInstanceState: Bundle?) {
-        super.onViewCreated(view,savedInstanceState)
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
 
         came.setOnClickListener {
-            if(checkPermission(
+            if (checkPermission(
                     Manifest.permission.READ_EXTERNAL_STORAGE,
-                    STORAGE_PERMISSION_CODE))
-            {
+                    STORAGE_PERMISSION_CODE
+                )
+            ) {
                 openGallery()
             }
         }
         updatebtn.setOnClickListener {
-              if(name.text.toString().isEmpty() || number.text.toString().length<11) {
-                  Toast.makeText(requireContext(), "Invalid name or Number", Toast.LENGTH_SHORT)
-                      .show()
-                  return@setOnClickListener
-              }
-            else
-              {
-                  val updateInfo=UpdateInfo(number.text.toString(),imageString,name.text.toString(),"sdfdfgdfsfs",
-                  "android",false,1)
-                  Model.updateProfile(updateInfo)
+            if (name.text.toString().isEmpty() || number.text.toString().length < 11) {
+                Toast.makeText(requireContext(), "Invalid name or Number", Toast.LENGTH_SHORT)
+                    .show()
+                return@setOnClickListener
+            } else {
+                val updateInfo = UpdateInfo(
+                    number.text.toString(), imageString, name.text.toString(), "sdfdfgdfsfs",
+                    "android", false, 1
+                )
+                Model.updateProfile(updateInfo)
 
-              }
+            }
         }
         ResponseObserver(Model)
     }
@@ -73,52 +74,65 @@ class UploadFragment @Inject constructor(): Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        binding=FragmentUploadBinding.inflate(layoutInflater)
-        name=binding.name
-        number=binding.number
-        image=binding.imagedis
-        came=binding.camera
-        updatebtn=binding.upbutton
+        binding = FragmentUploadBinding.inflate(layoutInflater)
+        name = binding.name
+        number = binding.number
+        image = binding.imagedis
+        came = binding.camera
+        updatebtn = binding.upbutton
         return binding.root
     }
-    private fun checkPermission(permission: String, requestCode: Int):Boolean {
-        if (ContextCompat.checkSelfPermission(requireContext(), permission) == PackageManager.PERMISSION_DENIED) {
+
+    private fun checkPermission(permission: String, requestCode: Int): Boolean {
+        if (ContextCompat.checkSelfPermission(
+                requireContext(),
+                permission
+            ) == PackageManager.PERMISSION_DENIED
+        ) {
 
 
             ActivityCompat.requestPermissions(requireActivity(), arrayOf(permission), requestCode)
             return false
         } else {
-            Toast.makeText(requireContext(), "Permission already granted", Toast.LENGTH_SHORT).show()
+            Toast.makeText(requireContext(), "Permission already granted", Toast.LENGTH_SHORT)
+                .show()
             return true
         }
     }
-    override fun onRequestPermissionsResult(requestCode: Int,
-                                            permissions: Array<String>,
-                                            grantResults: IntArray)
-    {
+
+    override fun onRequestPermissionsResult(
+        requestCode: Int,
+        permissions: Array<String>,
+        grantResults: IntArray
+    ) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults)
         if (requestCode == STORAGE_PERMISSION_CODE) {
             if (grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                Toast.makeText(requireContext(), "Storage Permission Granted", Toast.LENGTH_SHORT).show()
+                Toast.makeText(requireContext(), "Storage Permission Granted", Toast.LENGTH_SHORT)
+                    .show()
             } else {
-                Toast.makeText(requireContext(), "Storage Permission Denied", Toast.LENGTH_SHORT).show()
+                Toast.makeText(requireContext(), "Storage Permission Denied", Toast.LENGTH_SHORT)
+                    .show()
             }
         }
     }
+
     private fun openGallery() {
         val gallery = Intent(Intent.ACTION_PICK, MediaStore.Images.Media.INTERNAL_CONTENT_URI)
         startActivityForResult(gallery, PICK_IMAGE)
 
     }
+
     @Deprecated("Deprecated in Java")
-    override  fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
         if (resultCode == AppCompatActivity.RESULT_OK && requestCode == PICK_IMAGE) {
 
             imageUri = data?.data
             image.setImageURI(imageUri)
             try {
-                val bitmap = MediaStore.Images.Media.getBitmap(requireActivity().contentResolver, imageUri)
+                val bitmap =
+                    MediaStore.Images.Media.getBitmap(requireActivity().contentResolver, imageUri)
                 // initialize byte stream
                 val stream = ByteArrayOutputStream()
                 // compress Bitmap
@@ -134,14 +148,18 @@ class UploadFragment @Inject constructor(): Fragment() {
             }
         }
     }
-    private fun ResponseObserver(model:UpdateProfileViewModel)
-    {
-        model.serverresponse.observe(viewLifecycleOwner){ serverResponse ->
-            if(serverResponse==null) {
+
+    private fun ResponseObserver(model: UpdateProfileViewModel) {
+        model.serverresponse.observe(viewLifecycleOwner) { serverResponse ->
+            if (serverResponse == null) {
                 Toast.makeText(requireContext(), "Profile Not Updated", Toast.LENGTH_SHORT).show()
             } else {
 
-                Toast.makeText(requireContext(), "Profile Updated Successfully"+serverResponse, Toast.LENGTH_SHORT)
+                Toast.makeText(
+                    requireContext(),
+                    "Profile Updated Successfully" + serverResponse,
+                    Toast.LENGTH_SHORT
+                )
                     .show()
                 name.setText(null)
                 number.setText(null)

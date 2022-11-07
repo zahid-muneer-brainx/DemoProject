@@ -13,12 +13,13 @@ import retrofit2.Response
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import javax.inject.Inject
+
 @HiltViewModel
-class UpdateProfileViewModel @Inject constructor(private  val preferenceDataStore: PreferenceDataStore):ViewModel() {
+class UpdateProfileViewModel @Inject constructor(private val preferenceDataStore: PreferenceDataStore) :
+    ViewModel() {
     val serverresponse: MutableLiveData<ServerResponse?> = MutableLiveData()
     val requestHeaders = HashMap<String, String>()
-    fun updateProfile(updateInfo: UpdateInfo)
-    {
+    fun updateProfile(updateInfo: UpdateInfo) {
         viewModelScope.launch {
             preferenceDataStore.getFromDataStore().collect {
                 requestHeaders["access-token"] = it.access_token
@@ -30,7 +31,7 @@ class UpdateProfileViewModel @Inject constructor(private  val preferenceDataStor
                     .build()
                 val retrofitAPI: RetrofitInterface =
                     retrofit.create(RetrofitInterface::class.java)
-                val call: Call<ServerResponse?> = retrofitAPI.update(requestHeaders,updateInfo)
+                val call: Call<ServerResponse?> = retrofitAPI.update(requestHeaders, updateInfo)
                 call.enqueue(object : Callback<ServerResponse?> {
                     override fun onResponse(
                         call: Call<ServerResponse?>,
@@ -50,7 +51,11 @@ class UpdateProfileViewModel @Inject constructor(private  val preferenceDataStor
                     @SuppressLint("SetTextI18n")
                     override fun onFailure(call: Call<ServerResponse?>, t: Throwable) {
                         t.also {
-                               Toast.makeText(MyApplication.getAppContext(),t.message.toString(),Toast.LENGTH_SHORT).show()
+                            Toast.makeText(
+                                MyApplication.getAppContext(),
+                                t.message.toString(),
+                                Toast.LENGTH_SHORT
+                            ).show()
                         }
 
 

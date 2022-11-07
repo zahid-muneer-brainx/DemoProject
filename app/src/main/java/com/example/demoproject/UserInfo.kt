@@ -4,11 +4,11 @@ import com.google.gson.annotations.SerializedName
 import java.io.Serializable
 import javax.inject.Inject
 
-data class  UserInfo (
+data class UserInfo(
     @SerializedName("email")
-    val email:String,
+    val email: String,
     @SerializedName("password")
-    val password:String
+    val password: String
 
 
-    ):Serializable
+) : Serializable

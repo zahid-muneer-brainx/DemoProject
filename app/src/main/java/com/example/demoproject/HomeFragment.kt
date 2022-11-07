@@ -7,7 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import javax.inject.Inject
 
-class HomeFragment @Inject constructor(): Fragment() {
+class HomeFragment @Inject constructor() : Fragment() {
     // TODO: Rename and change types of parameters
     private var param1: String? = null
     private var param2: String? = null

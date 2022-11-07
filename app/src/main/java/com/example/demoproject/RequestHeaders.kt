@@ -5,11 +5,11 @@ import java.io.Serializable
 
 data class RequestHeaders(
     @SerializedName("uid")
-    val uid:String,
+    val uid: String,
     @SerializedName("access-token")
-    val access_token:String,
+    val access_token: String,
     @SerializedName("client")
-    val client:String
+    val client: String
 
-):Serializable {
+) : Serializable {
 }

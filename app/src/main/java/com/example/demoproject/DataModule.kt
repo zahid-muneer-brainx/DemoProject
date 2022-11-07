@@ -15,5 +15,6 @@ object DataModule {
 
     @Singleton
     @Provides
-    fun provideDataStoreRepository(@ApplicationContext context: Context)= PreferenceDataStore(context)
+    fun provideDataStoreRepository(@ApplicationContext context: Context) =
+        PreferenceDataStore(context)
 }

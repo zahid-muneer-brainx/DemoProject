@@ -11,14 +11,17 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 
 
 class ListingViewAdapter(
-    private val contactDataArrayList:ListingData, private val mcontext: Context
+    private val contactDataArrayList: ListingData, private val mcontext: Context
 ) :
     RecyclerView.Adapter<ListingViewAdapter.ViewHolder>() {
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int):ListingViewAdapter.ViewHolder{
+    override fun onCreateViewHolder(
+        parent: ViewGroup,
+        viewType: Int
+    ): ListingViewAdapter.ViewHolder {
         // Inflate Layout
-        val context=parent.context
+        val context = parent.context
         val inflater = LayoutInflater.from(context)
-        var myView= inflater.inflate(R.layout.customlistview, parent, false)
+        var myView = inflater.inflate(R.layout.customlistview, parent, false)
         return ViewHolder(myView)
     }
 

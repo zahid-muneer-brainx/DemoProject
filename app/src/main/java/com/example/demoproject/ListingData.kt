@@ -8,4 +8,4 @@ data class ListingData(
     val cardContacts: ArrayList<CardContacts>,
     @SerializedName("meta")
     val meta: Meta
-):Serializable
+) : Serializable

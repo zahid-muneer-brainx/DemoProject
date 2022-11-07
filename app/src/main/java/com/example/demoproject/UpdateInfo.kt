@@ -5,18 +5,18 @@ import java.io.Serializable
 
 data class UpdateInfo(
     @SerializedName("personal_number")
-    val personalNumber:String,
+    val personalNumber: String,
     @SerializedName("profile_picture")
-    val profilePic:String,
+    val profilePic: String,
     @SerializedName("name")
-    val name:String,
+    val name: String,
     @SerializedName("device_token")
-    val device_token:String,
+    val device_token: String,
     @SerializedName("app_platform")
-    val app_platform:String,
+    val app_platform: String,
     @SerializedName("call_forwarding")
-    val call_forwarding:Boolean,
+    val call_forwarding: Boolean,
     @SerializedName("app_version")
-    val app_version:Int
+    val app_version: Int
 
-    ):Serializable
+) : Serializable

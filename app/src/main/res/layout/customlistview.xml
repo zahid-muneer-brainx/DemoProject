@@ -1,42 +1,41 @@
 <?xml version="1.0" encoding="utf-8"?>
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="343dp"
+    android:layout_width="match_parent"
     android:layout_height="107dp"
     android:layout_gravity="center_horizontal"
-    android:paddingTop="19dp"
-    android:paddingStart="10dp"
     android:layout_marginTop="16dp"
-    >
-<ImageView
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
-    android:src="@drawable/ic_rectangle_1703"
-    >
+    android:paddingStart="10dp"
+    android:paddingTop="19dp">
 
-</ImageView>
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/ic_rectangle_1703">
+
+    </ImageView>
+
     <TextView
         android:id="@+id/contactname"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Zahid Muneer"
         android:layout_marginStart="73dp"
-        android:textSize="18dp"
+        android:text="Zahid Muneer"
         android:textColor="#29304D"
-        android:textStyle="bold"
-        >
+        android:textSize="18dp"
+        android:textStyle="bold">
 
     </TextView>
+
     <TextView
         android:id="@+id/contactemail"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="zaidmuneer25@gmail.com"
         android:layout_marginStart="73dp"
-        android:textSize="13dp"
+        android:layout_marginTop="29dp"
+        android:text="zaidmuneer25@gmail.com"
         android:textColor="#29304D"
 
-        android:layout_marginTop="29dp"
-        >
+        android:textSize="13dp">
 
     </TextView>
 </FrameLayout>

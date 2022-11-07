@@ -17,19 +17,20 @@ import retrofit2.converter.gson.GsonConverterFactory
 import javax.inject.Inject
 
 @HiltViewModel
-class LoginViewModel @Inject constructor(private  val preferenceDataStore: PreferenceDataStore):ViewModel() {
+class LoginViewModel @Inject constructor(private val preferenceDataStore: PreferenceDataStore) :
+    ViewModel() {
 
-    lateinit var mythrowable:Throwable
-    val serverresponse:MutableLiveData<ServerResponse?> = MutableLiveData()
+    lateinit var mythrowable: Throwable
+    val serverresponse: MutableLiveData<ServerResponse?> = MutableLiveData()
     fun login(email: String, pass: String) {
-        var requestHeaders:RequestHeaders?=null
+        var requestHeaders: RequestHeaders? = null
         viewModelScope.launch() {
             val retrofit = Retrofit.Builder()
                 .baseUrl("https://staging.clientdex.com")
                 .addConverterFactory(GsonConverterFactory.create())
                 .build()
             val retrofitAPI: RetrofitInterface = retrofit.create(RetrofitInterface::class.java)
-             val dataModal=UserInfo(email,pass)
+            val dataModal = UserInfo(email, pass)
 
             val call: Call<ServerResponse?> = retrofitAPI.login(dataModal)
 
@@ -40,7 +41,7 @@ class LoginViewModel @Inject constructor(private  val preferenceDataStore: Prefe
                 ) {
 
                     if (response.isSuccessful) {
-                        val headers=response.headers()
+                        val headers = response.headers()
                         requestHeaders = RequestHeaders(
                             headers.get("uid").toString(),
                             headers.get("access-token").toString(),
@@ -68,8 +69,8 @@ class LoginViewModel @Inject constructor(private  val preferenceDataStore: Prefe
         }
 
     }
-    private fun addDatatoStore(requestHeaders: RequestHeaders?)
-    {
+
+    private fun addDatatoStore(requestHeaders: RequestHeaders?) {
 
         viewModelScope.launch(Dispatchers.IO) {
             if (requestHeaders != null) {

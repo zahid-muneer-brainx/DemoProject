@@ -5,6 +5,6 @@ import java.io.Serializable
 
 data class ServerResponse(
     @SerializedName("name")
-    val name:String
+    val name: String
 
-    ):Serializable
+) : Serializable
