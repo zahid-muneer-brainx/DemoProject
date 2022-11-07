@@ -1,26 +1,34 @@
 package com.example.demoproject
 
 import android.Manifest
+import android.content.ContentResolver
 import android.content.Intent
 import android.content.pm.PackageManager
+import android.graphics.Bitmap
 import android.net.Uri
-import android.os.Binder
 import android.os.Bundle
 import android.provider.MediaStore
-import androidx.fragment.app.Fragment
+import android.util.Base64
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Button
 import android.widget.EditText
 import android.widget.ImageView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
+import androidx.fragment.app.Fragment
+import androidx.fragment.app.viewModels
 import com.example.demoproject.databinding.FragmentUploadBinding
+import dagger.hilt.android.AndroidEntryPoint
+import okio.IOException
+import java.io.ByteArrayOutputStream
 import javax.inject.Inject
 
 
+@AndroidEntryPoint
 class UploadFragment @Inject constructor(): Fragment() {
     private  val PICK_IMAGE = 100
     private  val STORAGE_PERMISSION_CODE = 101
@@ -29,9 +37,13 @@ class UploadFragment @Inject constructor(): Fragment() {
      lateinit var number:EditText
      lateinit var image:ImageView
      lateinit var came:ImageView
+     lateinit var updatebtn:Button
+     var imageString:String="data:image/png;base64,"
+    private val Model: UpdateProfileViewModel by viewModels()
     var imageUri: Uri? = null
     override fun onViewCreated(view: View,savedInstanceState: Bundle?) {
         super.onViewCreated(view,savedInstanceState)
+
         came.setOnClickListener {
             if(checkPermission(
                     Manifest.permission.READ_EXTERNAL_STORAGE,
@@ -40,6 +52,21 @@ class UploadFragment @Inject constructor(): Fragment() {
                 openGallery()
             }
         }
+        updatebtn.setOnClickListener {
+              if(name.text.toString().isEmpty() || number.text.toString().length<11) {
+                  Toast.makeText(requireContext(), "Invalid name or Number", Toast.LENGTH_SHORT)
+                      .show()
+                  return@setOnClickListener
+              }
+            else
+              {
+                  val updateInfo=UpdateInfo(number.text.toString(),imageString,name.text.toString(),"sdfdfgdfsfs",
+                  "android",false,1)
+                  Model.updateProfile(updateInfo)
+
+              }
+        }
+        ResponseObserver(Model)
     }
 
     override fun onCreateView(
@@ -51,6 +78,7 @@ class UploadFragment @Inject constructor(): Fragment() {
         number=binding.number
         image=binding.imagedis
         came=binding.camera
+        updatebtn=binding.upbutton
         return binding.root
     }
     private fun checkPermission(permission: String, requestCode: Int):Boolean {
@@ -86,9 +114,39 @@ class UploadFragment @Inject constructor(): Fragment() {
     override  fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
         if (resultCode == AppCompatActivity.RESULT_OK && requestCode == PICK_IMAGE) {
+
             imageUri = data?.data
             image.setImageURI(imageUri)
+            try {
+                val bitmap = MediaStore.Images.Media.getBitmap(requireActivity().contentResolver, imageUri)
+                // initialize byte stream
+                val stream = ByteArrayOutputStream()
+                // compress Bitmap
+                bitmap.compress(Bitmap.CompressFormat.JPEG, 100, stream)
+                // Initialize byte array
+                val bytes = stream.toByteArray()
+                // get base64 encoded string
+                imageString += Base64.encodeToString(bytes, Base64.DEFAULT)
+                // set encoded text on textview
+
+            } catch (e: IOException) {
+                e.printStackTrace()
+            }
         }
     }
+    private fun ResponseObserver(model:UpdateProfileViewModel)
+    {
+        model.serverresponse.observe(viewLifecycleOwner){ serverResponse ->
+            if(serverResponse==null) {
+                Toast.makeText(requireContext(), "Profile Not Updated", Toast.LENGTH_SHORT).show()
+            } else {
 
+                Toast.makeText(requireContext(), "Profile Updated Successfully"+serverResponse, Toast.LENGTH_SHORT)
+                    .show()
+                name.setText(null)
+                number.setText(null)
+                image.setImageURI(null)
+            }
+        }
+    }
 }

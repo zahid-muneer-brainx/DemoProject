@@ -10,20 +10,22 @@ import android.widget.Button
 import android.widget.EditText
 import android.widget.Toast
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.viewModels
 import androidx.lifecycle.ViewModelProvider
 import com.example.demoproject.databinding.FragmentLoginBinding
+import dagger.hilt.android.AndroidEntryPoint
 import java.util.regex.Pattern
 import javax.inject.Inject
 
-
+@AndroidEntryPoint
 class LoginFragment @Inject constructor() : Fragment() {
 
-    lateinit var  Model: LoginViewModel
+
     lateinit var binding:FragmentLoginBinding
     lateinit var email:EditText
     lateinit var password:EditText
     lateinit var loginbtn:Button
-
+    private val Model: LoginViewModel by viewModels()
 
     // TODO: Rename and change types of parameters
     private var param1: String? = null
@@ -32,7 +34,6 @@ class LoginFragment @Inject constructor() : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
 
         super.onViewCreated(view, savedInstanceState)
-        Model=ViewModelProvider(requireActivity())[LoginViewModel::class.java]
         ResponseObserver(Model)
         loginbtn.setOnClickListener {
 

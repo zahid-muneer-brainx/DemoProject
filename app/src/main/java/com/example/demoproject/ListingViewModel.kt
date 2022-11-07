@@ -20,6 +20,7 @@ class ListingViewModel  @Inject constructor(private  val preferenceDataStore: Pr
     lateinit var mythrowable:Throwable
     val requestHeaders = HashMap<String, String>()
     var recyclerDataArrayList=MutableLiveData<ListingData>()
+    var searchDataArrayList=MutableLiveData<ListingData>()
     fun getlist() {
             viewModelScope.launch(Dispatchers.IO) {
 
@@ -77,4 +78,61 @@ class ListingViewModel  @Inject constructor(private  val preferenceDataStore: Pr
                     }
             }
         }
+    fun searchByName(name:String?) {
+        viewModelScope.launch(Dispatchers.IO) {
+
+            preferenceDataStore.getFromDataStore().collect {
+                requestHeaders["access-token"]=it.access_token
+                requestHeaders["client"]=it.client
+                requestHeaders["uid"]=it.uid
+                val retrofit = Retrofit.Builder()
+                    .baseUrl("https://staging.clientdex.com")
+                    .addConverterFactory(GsonConverterFactory.create())
+                    .build()
+                val retrofitAPI: RetrofitInterface =
+                    retrofit.create(RetrofitInterface::class.java)
+                val call: Call<ListingData> =
+                    retrofitAPI.search(requestHeaders,name)
+                call.enqueue(object : Callback<ListingData> {
+                    override fun onResponse(
+                        call: Call<ListingData>,
+                        response: Response<ListingData>
+                    ) {
+
+                        if (response.isSuccessful) {
+                            searchDataArrayList.postValue(response.body()!!)
+                            println("INListing: " + response.body().toString())
+                            Toast.makeText(
+                                MyApplication.getAppContext(),
+                                "Successful",
+                                Toast.LENGTH_SHORT
+                            ).show()
+                        } else {
+                            Toast.makeText(
+                                MyApplication.getAppContext(),
+                                response.toString(),
+                                Toast.LENGTH_SHORT
+                            ).show()
+                        }
+                    }
+
+                    @SuppressLint("SetTextI18n")
+                    override fun onFailure(
+                        call: Call<ListingData>,
+                        t: Throwable
+                    ) {
+                        t.also {
+                            mythrowable = it
+                        }
+                        println(t.message.toString())
+                        Toast.makeText(
+                            MyApplication.getAppContext(),
+                            t.message.toString(),
+                            Toast.LENGTH_SHORT
+                        ).show()
+                    }
+                })
+            }
+        }
+    }
 }

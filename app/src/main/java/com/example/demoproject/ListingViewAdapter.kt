@@ -7,6 +7,8 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
+import dagger.hilt.android.lifecycle.HiltViewModel
+
 
 class ListingViewAdapter(
     private val contactDataArrayList:ListingData, private val mcontext: Context
@@ -17,7 +19,6 @@ class ListingViewAdapter(
         val context=parent.context
         val inflater = LayoutInflater.from(context)
         var myView= inflater.inflate(R.layout.customlistview, parent, false)
-
         return ViewHolder(myView)
     }
 
