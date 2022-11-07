@@ -76,10 +76,10 @@ class SearchFragment @Inject constructor(): Fragment() {
     private fun search(Model:ListingViewModel)
     {
         Model.searchDataArrayList.observe(viewLifecycleOwner){
-            for(i in Model.recyclerDataArrayList.value?.cardContacts?.indices!!)
+            for(i in Model.searchDataArrayList.value?.cardContacts?.indices!!)
             {
                 recyclerViewAdapter =
-                    ListingViewAdapter(Model.recyclerDataArrayList.value!!, requireContext())
+                    ListingViewAdapter(Model.searchDataArrayList.value!!, requireContext())
                 // below line is to set layout manager for our recycler view.
                 val manager = LinearLayoutManager(requireContext())
                 // setting layout manager for our recycler view.
