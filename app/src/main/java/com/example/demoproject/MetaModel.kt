@@ -3,7 +3,7 @@ package com.example.demoproject
 import com.google.gson.annotations.SerializedName
 import java.io.Serializable
 
-data class Meta(
+data class MetaModel(
     @SerializedName("current_page")
     val current_page: String,
     @SerializedName("total_pages")

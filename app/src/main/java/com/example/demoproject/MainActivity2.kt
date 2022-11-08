@@ -16,7 +16,7 @@ class MainActivity2 : AppCompatActivity() {
     @Inject
     lateinit var firstFragment: HomeFragment
     @Inject
-    lateinit var secondFragment: SearchFragment
+    lateinit var secondFragment: ListingFragment
     @Inject
     lateinit var thirdFragment: UploadFragment
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -38,8 +38,8 @@ class MainActivity2 : AppCompatActivity() {
     }
 
     private fun replacefragment(fragment: Fragment) {
-        val fragmentmanager = supportFragmentManager
-        val transaction = fragmentmanager.beginTransaction()
+        val fragmentManager = supportFragmentManager
+        val transaction = fragmentManager.beginTransaction()
         transaction.replace(binding.flFragment.id, fragment)
         transaction.commit()
     }

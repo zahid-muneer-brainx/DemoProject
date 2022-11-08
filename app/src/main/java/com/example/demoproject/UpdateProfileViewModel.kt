@@ -17,9 +17,9 @@ import javax.inject.Inject
 @HiltViewModel
 class UpdateProfileViewModel @Inject constructor(private val preferenceDataStore: PreferenceDataStore) :
     ViewModel() {
-    val serverresponse: MutableLiveData<ServerResponse?> = MutableLiveData()
+    val serverresponse: MutableLiveData<ServerResponseModel?> = MutableLiveData()
     val requestHeaders = HashMap<String, String>()
-    fun updateProfile(updateInfo: UpdateInfo) {
+    fun updateProfile(updateProfileInfoModel: UpdateProfileInfoModel) {
         viewModelScope.launch {
             preferenceDataStore.getFromDataStore().collect {
                 requestHeaders["access-token"] = it.access_token
@@ -31,11 +31,11 @@ class UpdateProfileViewModel @Inject constructor(private val preferenceDataStore
                     .build()
                 val retrofitAPI: RetrofitInterface =
                     retrofit.create(RetrofitInterface::class.java)
-                val call: Call<ServerResponse?> = retrofitAPI.update(requestHeaders, updateInfo)
-                call.enqueue(object : Callback<ServerResponse?> {
+                val call: Call<ServerResponseModel?> = retrofitAPI.update(requestHeaders, updateProfileInfoModel)
+                call.enqueue(object : Callback<ServerResponseModel?> {
                     override fun onResponse(
-                        call: Call<ServerResponse?>,
-                        response: Response<ServerResponse?>
+                        call: Call<ServerResponseModel?>,
+                        response: Response<ServerResponseModel?>
                     ) {
 
                         if (response.isSuccessful) {
@@ -49,7 +49,7 @@ class UpdateProfileViewModel @Inject constructor(private val preferenceDataStore
                     }
 
                     @SuppressLint("SetTextI18n")
-                    override fun onFailure(call: Call<ServerResponse?>, t: Throwable) {
+                    override fun onFailure(call: Call<ServerResponseModel?>, t: Throwable) {
                         t.also {
                             Toast.makeText(
                                 MyApplication.getAppContext(),

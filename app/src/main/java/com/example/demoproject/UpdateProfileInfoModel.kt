@@ -3,7 +3,7 @@ package com.example.demoproject
 import com.google.gson.annotations.SerializedName
 import java.io.Serializable
 
-data class UpdateInfo(
+data class UpdateProfileInfoModel(
     @SerializedName("personal_number")
     val personalNumber: String,
     @SerializedName("profile_picture")

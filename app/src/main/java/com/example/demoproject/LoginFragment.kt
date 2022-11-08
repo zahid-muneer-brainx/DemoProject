@@ -12,35 +12,31 @@ import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.lifecycleScope
 import com.example.demoproject.databinding.FragmentLoginBinding
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 import java.util.regex.Pattern
 import javax.inject.Inject
 
 @AndroidEntryPoint
 class LoginFragment @Inject constructor() : Fragment() {
-
-
+    @Inject
+    lateinit var  preferenceDataStore: PreferenceDataStore
     lateinit var binding: FragmentLoginBinding
-    lateinit var email: EditText
-    lateinit var password: EditText
-    lateinit var loginbtn: Button
-    private val Model: LoginViewModel by viewModels()
-
-    // TODO: Rename and change types of parameters
-    private var param1: String? = null
-    private var param2: String? = null
+    private val model: LoginViewModel by viewModels()
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
 
         super.onViewCreated(view, savedInstanceState)
-        ResponseObserver(Model)
-        loginbtn.setOnClickListener {
+        responseObserver(model)
+        binding.loginbtn.setOnClickListener {
 
 
-            if (validateEmailPassword(email.text.toString(), password.text.toString())) {
+            if (validateEmailPassword(binding.useremail.text.toString(), binding.userpassword.text.toString())) {
 
-                Model.login(email.text.toString(), password.text.toString())
+                model.login(binding.useremail.text.toString(), binding.userpassword.text.toString())
 
             } else {
                 Toast.makeText(
@@ -58,14 +54,10 @@ class LoginFragment @Inject constructor() : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         binding = FragmentLoginBinding.inflate(layoutInflater)
-        email = binding.useremail
-        password = binding.userpassword
-        loginbtn = binding.loginbtn
-
         return binding.root
     }
 
-    private fun ResponseObserver(model: LoginViewModel) {
+    private fun responseObserver(model: LoginViewModel) {
         model.serverresponse.observe(viewLifecycleOwner) { serverResponse ->
             if (serverResponse == null) {
                 Toast.makeText(requireContext(), "Logged in Failure", Toast.LENGTH_SHORT).show()
@@ -73,14 +65,12 @@ class LoginFragment @Inject constructor() : Fragment() {
 
                 Toast.makeText(
                     requireContext(),
-                    "Logged in Successful" + serverResponse,
+                    "Logged in Successful",
                     Toast.LENGTH_SHORT
                 ).show()
-                val settings: SharedPreferences =
-                    this.requireActivity().getSharedPreferences("login", 0) // 0 - for private mode
-                val editor = settings.edit()
-                editor.putBoolean("hasLoggedIn", true)
-                editor.apply()
+                lifecycleScope.launch(Dispatchers.IO){
+                    preferenceDataStore.saveLoginStatus(true)
+                }
                 activity?.let {
                     val intent = Intent(it, MainActivity2::class.java)
                     it.startActivity(intent)
@@ -90,13 +80,13 @@ class LoginFragment @Inject constructor() : Fragment() {
     }
 
     private fun validateEmailPassword(email: String, password: String): Boolean {
-        if (!isEmailValid(email))
-            return false
-        else return password.length >= 6
+        return if (!isEmailValid(email))
+            false
+        else password.length >= 6
 
     }
 
-    fun isEmailValid(email: String): Boolean {
+    private fun isEmailValid(email: String): Boolean {
         return Pattern.compile(
             "^(([\\w-]+\\.)+[\\w-]+|([a-zA-Z]|[\\w-]{2,}))@"
                     + "((([0-1]?[0-9]{1,2}|25[0-5]|2[0-4][0-9])\\.([0-1]?"

@@ -39,6 +39,12 @@
             >
 
         </activity>
+        <service
+            android:name=".MyService"
+            android:enabled="true"
+            >
+
+        </service>
     </application>
 
 </manifest>

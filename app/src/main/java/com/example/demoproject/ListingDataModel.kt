@@ -3,9 +3,9 @@ package com.example.demoproject
 import com.google.gson.annotations.SerializedName
 import java.io.Serializable
 
-data class ListingData(
+data class ListingDataModel(
     @SerializedName("card_contacts")
-    val cardContacts: ArrayList<CardContacts>,
+    val cardContactModels: ArrayList<CardContactsModel>,
     @SerializedName("meta")
-    val meta: Meta
+    val metaModel: MetaModel
 ) : Serializable

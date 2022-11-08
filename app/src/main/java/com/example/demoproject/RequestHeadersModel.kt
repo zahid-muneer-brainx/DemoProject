@@ -3,7 +3,7 @@ package com.example.demoproject
 import com.google.gson.annotations.SerializedName
 import java.io.Serializable
 
-data class RequestHeaders(
+data class RequestHeadersModel(
     @SerializedName("uid")
     val uid: String,
     @SerializedName("access-token")

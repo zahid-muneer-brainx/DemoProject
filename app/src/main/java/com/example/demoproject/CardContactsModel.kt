@@ -3,7 +3,7 @@ package com.example.demoproject
 import com.google.gson.annotations.SerializedName
 import java.io.Serializable
 
-data class CardContacts(
+data class CardContactsModel(
     @SerializedName("id")
     val id: Int,
     @SerializedName("full_name")

@@ -4,7 +4,7 @@ import com.google.gson.annotations.SerializedName
 import java.io.Serializable
 import javax.inject.Inject
 
-data class UserInfo(
+data class UserInfoModel(
     @SerializedName("email")
     val email: String,
     @SerializedName("password")

@@ -6,17 +6,17 @@
     tools:context=".LoginFragment">
 
     <ImageView
-        android:layout_width="117dp"
-        android:layout_height="77dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:layout_marginTop="59dp"
         android:src="@drawable/group_7745">
 
     </ImageView>
 
     <TextView
-        android:layout_width="343dp"
-        android:layout_height="34dp"
-        android:layout_gravity="center_horizontal"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
         android:layout_marginTop="171dp"
         android:text="@string/welcome_to_clientdex"
         android:textColor="#29304D"
@@ -26,21 +26,24 @@
     </TextView>
 
     <TextView
-        android:layout_width="343dp"
-        android:layout_height="46dp"
-        android:layout_gravity="center_horizontal"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+
         android:layout_marginTop="211dp"
         android:text="@string/enter_your_email_address_and_password_to_continue"
         android:textColor="#5D687E"
-        android:textSize="16sp">
+        android:textSize="16sp"
+        android:layout_marginStart="16dp"
+        >
 
     </TextView>
 
     <EditText
         android:id="@+id/useremail"
-        android:layout_width="343dp"
-        android:layout_height="55dp"
-        android:layout_gravity="center_horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="16dp"
         android:layout_marginTop="295dp"
         android:background="@drawable/rounded_corner_edittext"
         android:hint="@string/email"
@@ -53,10 +56,12 @@
 
     <EditText
         android:id="@+id/userpassword"
-        android:layout_width="343dp"
-        android:layout_height="55dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
         android:layout_marginTop="364dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginStart="16dp"
         android:background="@drawable/rounded_corner_edittext"
         android:hint="@string/password"
         android:inputType="textPassword"
@@ -68,8 +73,10 @@
 
     <Button
         android:id="@+id/loginbtn"
-        android:layout_width="343dp"
-        android:layout_height="45dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="16dp"
         android:layout_gravity="center_horizontal"
         android:layout_marginTop="459dp"
 

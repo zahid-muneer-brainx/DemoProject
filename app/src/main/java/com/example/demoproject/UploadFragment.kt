@@ -5,81 +5,98 @@ import android.app.Activity
 import android.app.Activity.RESULT_CANCELED
 import android.app.Activity.RESULT_OK
 import android.app.AlertDialog
-import android.content.Context
-import android.content.Intent
-import android.content.SharedPreferences
+import android.content.*
 import android.content.pm.PackageManager
 import android.database.Cursor
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.net.Uri
 import android.os.Bundle
+import android.os.IBinder
 import android.provider.MediaStore
 import android.util.Base64
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Button
-import android.widget.EditText
-import android.widget.ImageView
 import android.widget.Toast
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.lifecycleScope
 import com.example.demoproject.databinding.FragmentUploadBinding
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 import java.io.ByteArrayOutputStream
 import java.io.IOException
 import javax.inject.Inject
 
-
 @AndroidEntryPoint
 class UploadFragment @Inject constructor() : Fragment() {
-    val REQUEST_ID_MULTIPLE_PERMISSIONS = 101
+    @Inject
+    lateinit var preferenceDataStore: PreferenceDataStore
+     var myService: MyService?=null
+    var isBound = false
+    private val REQUEST_ID_MULTIPLE_PERMISSIONS = 101
     lateinit var binding: FragmentUploadBinding
-    lateinit var name: EditText
-    lateinit var number: EditText
-    lateinit var image: ImageView
-    lateinit var came: ImageView
-    lateinit var updatebtn: Button
-    lateinit var logoutbtn:Button
-    var imageString: String = "data:image/png;base64,"
-    private val Model: UpdateProfileViewModel by viewModels()
+    private var imageString: String = "data:image/png;base64,"
+    private val myConnection = object : ServiceConnection {
+        override fun onServiceConnected(
+            className: ComponentName,
+            service: IBinder
+        ) {
+            val binder = service as MyService.MyBinder
+            myService = binder.getService()
+            isBound = true
+        }
+
+        override fun onServiceDisconnected(name: ComponentName) {
+            isBound = false
+        }
+    }
+    private val model: UpdateProfileViewModel by viewModels()
     var imageUri: Uri? = null
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
-        came.setOnClickListener {
-            if(checkAndRequestPermissions(requireActivity())){
-            chooseImage(requireActivity())
+        binding.camera.setOnClickListener {
+            if (checkAndRequestPermissions(requireActivity())) {
+                chooseImage(requireActivity())
+            }
         }
-        }
-        updatebtn.setOnClickListener {
-            if (name.text.toString().isEmpty() || number.text.toString().length < 11) {
+        binding.upbutton.setOnClickListener {
+            if (binding.name.text.toString()
+                    .isEmpty() || binding.number.text.toString().length < 11
+            ) {
                 Toast.makeText(requireContext(), "Invalid name or Number", Toast.LENGTH_SHORT)
                     .show()
                 return@setOnClickListener
             } else {
-                val updateInfo = UpdateInfo(
-                    number.text.toString(), imageString, name.text.toString(), "sdfdfgdfsfs",
-                    "android", false, 1
+                val updateProfileInfoModel = UpdateProfileInfoModel(
+                    binding.number.text.toString(),
+                    imageString,
+                    binding.name.text.toString(),
+                    "sdfdfgdfsfs",
+                    "android",
+                    false,
+                    1
                 )
-                Model.updateProfile(updateInfo)
-
+                if(isBound) {
+                    imageString+=myService?.uriToBase64(imageUri)
+                    model.updateProfile(updateProfileInfoModel)
+                    ResponseObserver()
+                }
             }
         }
-        ResponseObserver(Model)
-        logoutbtn.setOnClickListener {
-            val settings: SharedPreferences =
-                this.requireActivity().getSharedPreferences("login", 0) // 0 - for private mode
-            val editor = settings.edit()
-            editor.putBoolean("hasLoggedIn", false)
-            editor.apply()
+
+        binding.logout.setOnClickListener {
+            lifecycleScope.launch(Dispatchers.IO) {
+                preferenceDataStore.saveLoginStatus(false)
+            }
             activity?.let {
                 val intent = Intent(it, MainActivity::class.java)
                 it.startActivity(intent)
-                Toast.makeText(requireContext(),"Logout",Toast.LENGTH_SHORT).show()
+                Toast.makeText(requireContext(), "Logout", Toast.LENGTH_SHORT).show()
             }
         }
     }
@@ -89,15 +106,13 @@ class UploadFragment @Inject constructor() : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         binding = FragmentUploadBinding.inflate(layoutInflater)
-        name = binding.name
-        number = binding.number
-        image = binding.imagedis
-        came = binding.camera
-        updatebtn = binding.upbutton
-        logoutbtn=binding.logout
+        Intent(requireContext(), MyService::class.java).also { intent ->
+            activity?.bindService(intent, myConnection, Context.BIND_AUTO_CREATE)
+        }
         return binding.root
     }
-    private fun ResponseObserver(model: UpdateProfileViewModel) {
+
+    private fun ResponseObserver() {
         model.serverresponse.observe(viewLifecycleOwner) { serverResponse ->
             if (serverResponse == null) {
                 Toast.makeText(requireContext(), "Profile Not Updated", Toast.LENGTH_SHORT).show()
@@ -105,19 +120,19 @@ class UploadFragment @Inject constructor() : Fragment() {
 
                 Toast.makeText(
                     requireContext(),
-                    "Profile Updated Successfully" + serverResponse,
+                    "Profile Updated Successfully $serverResponse",
                     Toast.LENGTH_SHORT
                 )
                     .show()
-                name.setText(null)
-                number.setText(null)
-                image.setImageURI(null)
+                binding.name.setText(null)
+                binding.number.setText(null)
+                binding.imagedis.setImageURI(null)
             }
         }
     }
 
     fun checkAndRequestPermissions(context: Activity?): Boolean {
-        val WExtstorePermission = ContextCompat.checkSelfPermission(
+        val rExtstorePermission = ContextCompat.checkSelfPermission(
             requireContext(),
             Manifest.permission.READ_EXTERNAL_STORAGE
         )
@@ -129,11 +144,11 @@ class UploadFragment @Inject constructor() : Fragment() {
         if (cameraPermission != PackageManager.PERMISSION_GRANTED) {
             listPermissionsNeeded.add(Manifest.permission.CAMERA)
         }
-        if (WExtstorePermission != PackageManager.PERMISSION_GRANTED) {
+        if (rExtstorePermission != PackageManager.PERMISSION_GRANTED) {
             listPermissionsNeeded
                 .add(Manifest.permission.READ_EXTERNAL_STORAGE)
         }
-        if (!listPermissionsNeeded.isEmpty()) {
+        if (listPermissionsNeeded.isNotEmpty()) {
             ActivityCompat.requestPermissions(
                 requireActivity(), listPermissionsNeeded
                     .toTypedArray(),
@@ -174,20 +189,23 @@ class UploadFragment @Inject constructor() : Fragment() {
         }
         builder.show()
     }
+
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
         if (resultCode != RESULT_CANCELED) {
             when (requestCode) {
                 0 -> if (resultCode == RESULT_OK && data != null) {
-                     imageUri = data.data
-                    image.setImageURI(imageUri)
-                     uriToBase64()
+                    imageUri = data.data
+                    binding.imagedis.setImageURI(imageUri)
+                    if(isBound) {
+                        imageString+=myService?.uriToBase64(imageUri)
+                    }
                 }
                 1 -> if (resultCode == RESULT_OK && data != null) {
                     imageUri = data.data
                     val filePathColumn = arrayOf(MediaStore.Images.Media.DATA)
                     if (imageUri != null) {
-                        val cursor: Cursor? =requireActivity().contentResolver.query(
+                        val cursor: Cursor? = requireActivity().contentResolver.query(
                             imageUri!!,
                             filePathColumn,
                             null,
@@ -199,9 +217,11 @@ class UploadFragment @Inject constructor() : Fragment() {
                             cursor.moveToFirst()
                             val columnIndex: Int = cursor.getColumnIndex(filePathColumn[0])
                             val picturePath: String = cursor.getString(columnIndex)
-                            image.setImageBitmap(BitmapFactory.decodeFile(picturePath))
+                            binding.imagedis.setImageBitmap(BitmapFactory.decodeFile(picturePath))
                             cursor.close()
-                          uriToBase64()
+                            if(isBound) {
+                                imageString+=myService?.uriToBase64(imageUri)
+                            }
                         }
                     }
                 }
@@ -209,16 +229,19 @@ class UploadFragment @Inject constructor() : Fragment() {
             }
         }
     }
-private fun uriToBase64()
-{
-    try {
-        val bitmap = MediaStore.Images.Media.getBitmap(requireActivity().contentResolver, imageUri)
-        val stream = ByteArrayOutputStream()
-        bitmap.compress(Bitmap.CompressFormat.JPEG, 100, stream)
-        val bytes: ByteArray = stream.toByteArray()
-        imageString += Base64.encodeToString(bytes, Base64.DEFAULT)
-    } catch (e: IOException) {
-        e.printStackTrace()
+
+    override fun onStart() {
+        super.onStart()
+        // Bind to LocalService
+        Intent(requireContext(), MyService::class.java).also { intent ->
+            activity?.bindService(intent, myConnection, Context.BIND_AUTO_CREATE)
+        }
+        isBound=true
     }
-}
+
+    override fun onStop() {
+        super.onStop()
+        requireContext().unbindService(myConnection)
+        isBound = false
+    }
 }

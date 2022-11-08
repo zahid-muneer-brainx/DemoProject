@@ -31,24 +31,16 @@
 
     </TextView>
 
-    <FrameLayout
+    <androidx.appcompat.widget.LinearLayoutCompat
         android:layout_width="160dp"
-        android:layout_height="108dp"
+        android:layout_height="wrap_content"
         android:layout_marginTop="155dp"
-        android:background="@drawable/hometabs"
-        android:backgroundTint="@color/white"
-
-        >
-
-    </FrameLayout>
-
-    <FrameLayout
-        android:layout_width="160dp"
-        android:layout_height="108dp"
-        android:layout_marginTop="155dp"
+        android:orientation="vertical"
         android:background="@drawable/hometabs"
         android:backgroundTint="@color/white"
         android:paddingStart="20dp"
+        android:paddingEnd="71dp"
+        android:paddingBottom="20dp"
 
         >
 
@@ -63,7 +55,7 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="70dp"
+
             android:text="Do Today"
             android:textColor="#060606"
             android:textSize="16sp"
@@ -72,16 +64,18 @@
             >
 
         </TextView>
-    </FrameLayout>
+    </androidx.appcompat.widget.LinearLayoutCompat>
 
-    <FrameLayout
+    <androidx.appcompat.widget.LinearLayoutCompat
         android:layout_width="160dp"
-        android:layout_height="108dp"
+        android:layout_height="wrap_content"
         android:layout_gravity="end"
+        android:orientation="vertical"
         android:layout_marginTop="155dp"
         android:background="@drawable/hometabs"
         android:backgroundTint="@color/white"
         android:paddingStart="20dp"
+        android:paddingBottom="20dp"
 
         >
 
@@ -96,7 +90,7 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="70dp"
+
             android:text="@string/activities_tips"
             android:textColor="#060606"
             android:textSize="16sp"
@@ -105,15 +99,18 @@
             >
 
         </TextView>
-    </FrameLayout>
+    </androidx.appcompat.widget.LinearLayoutCompat>
 
-    <FrameLayout
+    <LinearLayout
         android:layout_width="160dp"
-        android:layout_height="108dp"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
         android:layout_marginTop="283dp"
         android:background="@drawable/hometabs"
         android:backgroundTint="@color/white"
-        android:paddingStart="20dp">
+        android:paddingStart="20dp"
+        android:paddingBottom="20dp"
+        >
 
         <ImageView
             android:layout_width="wrap_content"
@@ -126,7 +123,7 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="70dp"
+
             android:text="@string/track_it"
             android:textColor="#060606"
             android:textSize="16sp"
@@ -135,16 +132,18 @@
             >
 
         </TextView>
-    </FrameLayout>
+    </LinearLayout>
 
-    <FrameLayout
+    <LinearLayout
         android:layout_width="160dp"
-        android:layout_height="108dp"
+        android:layout_height="wrap_content"
         android:layout_gravity="end"
+        android:orientation="vertical"
         android:layout_marginTop="283dp"
         android:background="@drawable/hometabs"
         android:backgroundTint="@color/white"
         android:paddingStart="20dp"
+        android:paddingBottom="20dp"
 
         >
 
@@ -159,7 +158,6 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="70dp"
             android:text="@string/events"
             android:textColor="#060606"
             android:textSize="16sp"
@@ -168,15 +166,17 @@
             >
 
         </TextView>
-    </FrameLayout>
+    </LinearLayout>
 
-    <FrameLayout
+    <LinearLayout
         android:layout_width="160dp"
-        android:layout_height="108dp"
+        android:layout_height="wrap_content"
         android:layout_marginTop="411dp"
+        android:orientation="vertical"
         android:background="@drawable/hometabs"
         android:backgroundTint="@color/white"
-        android:paddingStart="20dp">
+        android:paddingStart="20dp"
+        android:paddingBottom="20dp">
 
         <ImageView
             android:layout_width="wrap_content"
@@ -189,7 +189,7 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="70dp"
+
             android:text="@string/training"
             android:textColor="#060606"
             android:textSize="16sp"
@@ -198,16 +198,18 @@
             >
 
         </TextView>
-    </FrameLayout>
+    </LinearLayout>
 
-    <FrameLayout
+    <LinearLayout
         android:layout_width="160dp"
-        android:layout_height="108dp"
+        android:layout_height="wrap_content"
         android:layout_gravity="end"
+        android:orientation="vertical"
         android:layout_marginTop="411dp"
         android:background="@drawable/hometabs"
         android:backgroundTint="@color/white"
-        android:paddingStart="20dp">
+        android:paddingStart="20dp"
+        android:paddingBottom="20dp">
 
         <ImageView
             android:layout_width="wrap_content"
@@ -220,7 +222,7 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="70dp"
+
             android:text="@string/say_share"
             android:textColor="#060606"
             android:textSize="16sp"
@@ -229,7 +231,7 @@
             >
 
         </TextView>
-    </FrameLayout>
+    </LinearLayout>
 
 
 </FrameLayout>

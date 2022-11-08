@@ -3,11 +3,11 @@ package com.example.demoproject
 import android.content.Context
 import androidx.datastore.core.DataStore
 import androidx.datastore.preferences.core.Preferences
+import androidx.datastore.preferences.core.booleanPreferencesKey
 import androidx.datastore.preferences.core.edit
 import androidx.datastore.preferences.core.stringPreferencesKey
 import androidx.datastore.preferences.preferencesDataStore
 import kotlinx.coroutines.flow.map
-import javax.inject.Singleton
 
 
 class PreferenceDataStore(val context: Context) {
@@ -19,24 +19,35 @@ class PreferenceDataStore(val context: Context) {
         val UID = stringPreferencesKey("uid")
         val ACCESSTOKEN = stringPreferencesKey("accesstoken")
         val CLIENT = stringPreferencesKey("client")
-
+        val loginStatus= booleanPreferencesKey("loginstatus")
     }
 
-    suspend fun savetoDataStore(requestHeaders: RequestHeaders) {
+    suspend fun savetoDataStore(requestHeadersModel: RequestHeadersModel) {
         context.dataStore.edit {
 
-            it[UID] = requestHeaders.uid
-            it[ACCESSTOKEN] = requestHeaders.access_token
-            it[CLIENT] = requestHeaders.client
+            it[UID] = requestHeadersModel.uid
+            it[ACCESSTOKEN] = requestHeadersModel.access_token
+            it[CLIENT] = requestHeadersModel.client
 
         }
     }
 
     fun getFromDataStore() = context.dataStore.data.map {
-        RequestHeaders(
+        RequestHeadersModel(
             uid = it[UID] ?: "",
             access_token = it[ACCESSTOKEN] ?: "",
             client = it[CLIENT] ?: ""
         )
+    }
+    suspend fun saveLoginStatus(status:Boolean)
+    {
+        context.dataStore.edit {
+
+            it[loginStatus]=status
+
+        }
+    }
+    suspend fun getLoginStatus()= context.dataStore.data.map {
+           it[loginStatus] ?: false
     }
 }

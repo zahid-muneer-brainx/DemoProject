@@ -12,7 +12,6 @@ class MyApplication : Application() {
 
     companion object {
         lateinit var appInstance: MyApplication
-        fun getApplication(): MyApplication = appInstance
         fun getAppContext(): Context = appInstance.applicationContext
     }
 
