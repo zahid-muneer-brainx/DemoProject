@@ -22,15 +22,20 @@
         >
 
     </SearchView>
-
+<androidx.core.widget.NestedScrollView
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_marginTop="82dp"
+    android:id="@+id/idNestedSV"
+    >
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/RTview"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_marginTop="82dp"
         android:layout_gravity="center_horizontal"
         android:background="#D4DAE4"
         >
 
     </androidx.recyclerview.widget.RecyclerView>
+</androidx.core.widget.NestedScrollView>
 </FrameLayout>

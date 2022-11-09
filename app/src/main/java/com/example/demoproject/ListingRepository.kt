@@ -3,7 +3,9 @@ package com.example.demoproject
 import android.annotation.SuppressLint
 import android.widget.Toast
 import androidx.lifecycle.MutableLiveData
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.cancellable
+import kotlinx.coroutines.runBlocking
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -13,14 +15,12 @@ import javax.inject.Inject
 
 class ListingRepository @Inject constructor(private val preferenceDataStore: PreferenceDataStore) {
     private val requestHeaders = HashMap<String, String>()
-    suspend fun getlist(mydata: MutableLiveData<ListingDataModel>) {
+    suspend fun getlist(mydata: MutableLiveData<ListingDataModel>,page:Int) {
 
-        preferenceDataStore.getFromDataStore().cancellable().collect {
+        preferenceDataStore.getFromDataStore().collect {
             requestHeaders["access-token"] = it.access_token
             requestHeaders["client"] = it.client
             requestHeaders["uid"] = it.uid
-
-        }
 
             val retrofit = Retrofit.Builder()
                 .baseUrl("https://staging.clientdex.com")
@@ -29,7 +29,7 @@ class ListingRepository @Inject constructor(private val preferenceDataStore: Pre
             val retrofitAPI: RetrofitInterface =
                 retrofit.create(RetrofitInterface::class.java)
             val call: Call<ListingDataModel> =
-                retrofitAPI.allContacts(requestHeaders)
+                retrofitAPI.allContacts(requestHeaders,page)
             call.enqueue(object : Callback<ListingDataModel> {
                 override fun onResponse(
                     call: Call<ListingDataModel>,
@@ -37,7 +37,13 @@ class ListingRepository @Inject constructor(private val preferenceDataStore: Pre
                 ) {
 
                     if (response.isSuccessful) {
-                        mydata.postValue(response.body())
+                        if(page>0) {
+                            response.body()
+                                ?.let { mydata.value?.cardContactModels?.addAll(it.cardContactModels) }
+                        }
+                        else{
+                            mydata.postValue(response.body())
+                        }
                     } else {
                         Toast.makeText(
                             MyApplication.getAppContext(),
@@ -62,10 +68,10 @@ class ListingRepository @Inject constructor(private val preferenceDataStore: Pre
                 }
             })
             println("lllllllllllllllllllllllggggggg")
-
+        }
     }
 
-    suspend fun searchByName(name: String?, mydata: MutableLiveData<ListingDataModel>) {
+    suspend fun searchByName(name: String?, mydata: MutableLiveData<ListingDataModel>,page:Int) {
         preferenceDataStore.getFromDataStore().collect {
             requestHeaders["access-token"] = it.access_token
             requestHeaders["client"] = it.client
@@ -77,7 +83,7 @@ class ListingRepository @Inject constructor(private val preferenceDataStore: Pre
             val retrofitAPI: RetrofitInterface =
                 retrofit.create(RetrofitInterface::class.java)
             val call: Call<ListingDataModel> =
-                retrofitAPI.search(requestHeaders, name)
+                retrofitAPI.search(requestHeaders, name,page)
             call.enqueue(object : Callback<ListingDataModel> {
                 override fun onResponse(
                     call: Call<ListingDataModel>,

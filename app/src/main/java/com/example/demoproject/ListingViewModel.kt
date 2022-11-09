@@ -22,16 +22,16 @@ class ListingViewModel @Inject constructor(private var listingRepository: Listin
 
     var recyclerDataArrayList = MutableLiveData<ListingDataModel>()
     var searchDataArrayList = MutableLiveData<ListingDataModel>()
-    fun getlist() {
+    fun getlist(page:Int) {
         viewModelScope.launch(Dispatchers.IO) {
-            listingRepository.getlist(recyclerDataArrayList)
+            listingRepository.getlist(recyclerDataArrayList,page)
             println("API call.....")
         }
     }
 
-    fun searchByName(name: String?) {
+    fun searchByName(name: String?,page:Int) {
         viewModelScope.launch(Dispatchers.IO) {
-            listingRepository.searchByName(name, searchDataArrayList)
+            listingRepository.searchByName(name, searchDataArrayList,page)
         }
     }
 }
