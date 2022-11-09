@@ -14,7 +14,6 @@ import android.net.Uri
 import android.os.Bundle
 import android.os.IBinder
 import android.provider.MediaStore
-import android.util.Base64
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -28,9 +27,8 @@ import com.example.demoproject.databinding.FragmentUploadBinding
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-import java.io.ByteArrayOutputStream
-import java.io.IOException
 import javax.inject.Inject
+
 
 @AndroidEntryPoint
 class UploadFragment @Inject constructor() : Fragment() {
@@ -56,7 +54,7 @@ class UploadFragment @Inject constructor() : Fragment() {
         }
     }
     private val model: UpdateProfileViewModel by viewModels()
-    var imageUri: Uri? = null
+    var imageBitmap: Bitmap? = null
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         binding.camera.setOnClickListener {
@@ -82,7 +80,6 @@ class UploadFragment @Inject constructor() : Fragment() {
                     1
                 )
                 if(isBound) {
-                    imageString+=myService?.uriToBase64(imageUri)
                     model.updateProfile(updateProfileInfoModel)
                     ResponseObserver()
                 }
@@ -195,35 +192,22 @@ class UploadFragment @Inject constructor() : Fragment() {
         if (resultCode != RESULT_CANCELED) {
             when (requestCode) {
                 0 -> if (resultCode == RESULT_OK && data != null) {
-                    imageUri = data.data
-                    binding.imagedis.setImageURI(imageUri)
+                    println("Image from Camera 0")
+                    imageBitmap = data.extras!!["data"] as Bitmap?
+                    binding.imagedis.setImageBitmap(imageBitmap)
                     if(isBound) {
-                        imageString+=myService?.uriToBase64(imageUri)
+                        imageString+=myService?.uriToBase64(imageBitmap,requireActivity().contentResolver)
                     }
                 }
                 1 -> if (resultCode == RESULT_OK && data != null) {
-                    imageUri = data.data
+                    println("Image from Gallery 0")
+                    imageBitmap = data.extras!!["data"] as Bitmap?
                     val filePathColumn = arrayOf(MediaStore.Images.Media.DATA)
-                    if (imageUri != null) {
-                        val cursor: Cursor? = requireActivity().contentResolver.query(
-                            imageUri!!,
-                            filePathColumn,
-                            null,
-                            null,
-                            null
-                        )
-
-                        if (cursor != null) {
-                            cursor.moveToFirst()
-                            val columnIndex: Int = cursor.getColumnIndex(filePathColumn[0])
-                            val picturePath: String = cursor.getString(columnIndex)
-                            binding.imagedis.setImageBitmap(BitmapFactory.decodeFile(picturePath))
-                            cursor.close()
+                            binding.imagedis.setImageBitmap(imageBitmap)
+                            println("Image from Gallery")
                             if(isBound) {
-                                imageString+=myService?.uriToBase64(imageUri)
+                                imageString+=myService?.uriToBase64(imageBitmap,requireActivity().contentResolver)
                             }
-                        }
-                    }
                 }
 
             }
@@ -237,11 +221,5 @@ class UploadFragment @Inject constructor() : Fragment() {
             activity?.bindService(intent, myConnection, Context.BIND_AUTO_CREATE)
         }
         isBound=true
-    }
-
-    override fun onStop() {
-        super.onStop()
-        requireContext().unbindService(myConnection)
-        isBound = false
     }
 }

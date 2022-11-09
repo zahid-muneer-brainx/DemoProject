@@ -25,6 +25,7 @@ class ListingViewModel @Inject constructor(private var listingRepository: Listin
     fun getlist() {
         viewModelScope.launch(Dispatchers.IO) {
             listingRepository.getlist(recyclerDataArrayList)
+            println("API call.....")
         }
     }
 

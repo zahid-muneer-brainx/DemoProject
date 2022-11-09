@@ -19,19 +19,25 @@ class MainActivity2 : AppCompatActivity() {
     lateinit var secondFragment: ListingFragment
     @Inject
     lateinit var thirdFragment: UploadFragment
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityMain2Binding.inflate(layoutInflater)
         setContentView(binding.root)
         supportActionBar?.hide()
+
         replacefragment(firstFragment)
         binding.bottomNavigationView.setOnItemSelectedListener {
             when (it.itemId) {
                 R.id.home -> replacefragment(firstFragment)
+
                 R.id.search -> replacefragment(secondFragment)
                 R.id.upload -> replacefragment(thirdFragment)
             }
             true
+
+        }
+        binding.bottomNavigationView.setOnItemReselectedListener{
 
         }
 

@@ -27,11 +27,9 @@ class LoginViewModel @Inject constructor (private var loginRepository: LoginRepo
 
         viewModelScope.launch() {
             loginRepository.login(serverresponse, email, pass)
+            println("Headers: "+loginRepository.requestHeadersModel.toString())
+        }
 
-        }
-        viewModelScope.launch {
-            loginRepository.addDatatoStore(loginRepository.requestHeadersModel)
-        }
 
     }
 

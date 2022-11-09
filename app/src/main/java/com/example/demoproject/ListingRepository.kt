@@ -3,6 +3,7 @@ package com.example.demoproject
 import android.annotation.SuppressLint
 import android.widget.Toast
 import androidx.lifecycle.MutableLiveData
+import kotlinx.coroutines.flow.cancellable
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -14,10 +15,13 @@ class ListingRepository @Inject constructor(private val preferenceDataStore: Pre
     private val requestHeaders = HashMap<String, String>()
     suspend fun getlist(mydata: MutableLiveData<ListingDataModel>) {
 
-        preferenceDataStore.getFromDataStore().collect {
+        preferenceDataStore.getFromDataStore().cancellable().collect {
             requestHeaders["access-token"] = it.access_token
             requestHeaders["client"] = it.client
             requestHeaders["uid"] = it.uid
+
+        }
+
             val retrofit = Retrofit.Builder()
                 .baseUrl("https://staging.clientdex.com")
                 .addConverterFactory(GsonConverterFactory.create())
@@ -54,9 +58,11 @@ class ListingRepository @Inject constructor(private val preferenceDataStore: Pre
                         t.message.toString(),
                         Toast.LENGTH_SHORT
                     ).show()
+                    println(t.message.toString())
                 }
             })
-        }
+            println("lllllllllllllllllllllllggggggg")
+
     }
 
     suspend fun searchByName(name: String?, mydata: MutableLiveData<ListingDataModel>) {
@@ -80,7 +86,6 @@ class ListingRepository @Inject constructor(private val preferenceDataStore: Pre
 
                     if (response.isSuccessful) {
                         mydata.postValue(response.body()!!)
-                        println("INListing: " + response.body().toString())
                         Toast.makeText(
                             MyApplication.getAppContext(),
                             "Successful",

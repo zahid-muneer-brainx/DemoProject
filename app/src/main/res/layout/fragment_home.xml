@@ -39,7 +39,6 @@
         android:background="@drawable/hometabs"
         android:backgroundTint="@color/white"
         android:paddingStart="20dp"
-        android:paddingEnd="71dp"
         android:paddingBottom="20dp"
 
         >

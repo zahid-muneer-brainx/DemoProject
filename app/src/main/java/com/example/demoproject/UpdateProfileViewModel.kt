@@ -42,7 +42,7 @@ class UpdateProfileViewModel @Inject constructor(private val preferenceDataStore
                             serverresponse.postValue(response.body())
 
                         } else {
-
+                            println("failure")
                             serverresponse.postValue(null)
 
                         }

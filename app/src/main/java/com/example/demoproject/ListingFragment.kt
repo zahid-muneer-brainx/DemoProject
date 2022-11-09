@@ -19,24 +19,20 @@ class ListingFragment @Inject constructor() : Fragment() {
     private val model: ListingViewModel by viewModels()
     private var recyclerViewAdapter: ListingViewAdapter? = null
     lateinit var binding: FragmentSearchBinding
-
-    @Inject
-    lateinit var preferenceDataStore: PreferenceDataStore
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         model.getlist()
-
+        search(model)
         upload(model)
         binding.sv1.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
             override fun onQueryTextSubmit(query: String?): Boolean {
                 model.searchByName(query)
-                search(model)
+
                 return false
             }
 
             override fun onQueryTextChange(newText: String?): Boolean {
                 model.searchByName(newText)
-                search(model)
                 return false
             }
         })

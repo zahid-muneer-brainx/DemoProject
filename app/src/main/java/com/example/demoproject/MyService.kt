@@ -2,6 +2,7 @@ package com.example.demoproject
 
 
 import android.app.Service
+import android.content.ContentResolver
 import android.content.Intent
 import android.graphics.Bitmap
 import android.net.Uri
@@ -27,12 +28,10 @@ class MyService : Service() {
             return this@MyService
         }
     }
-     fun uriToBase64(imageUri:Uri?):String {
+     fun uriToBase64(imageBitmap: Bitmap?,contentResolver: ContentResolver):String {
         try {
-            val bitmap =
-                MediaStore.Images.Media.getBitmap(MyApplication.appInstance.contentResolver, imageUri)
             val stream = ByteArrayOutputStream()
-            bitmap.compress(Bitmap.CompressFormat.JPEG, 100, stream)
+            imageBitmap?.compress(Bitmap.CompressFormat.JPEG, 100, stream)
             val bytes: ByteArray = stream.toByteArray()
             return  Base64.encodeToString(bytes, Base64.DEFAULT)
         } catch (e: IOException) {

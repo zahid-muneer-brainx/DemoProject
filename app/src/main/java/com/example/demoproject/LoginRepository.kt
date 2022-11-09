@@ -3,8 +3,10 @@ package com.example.demoproject
 import android.annotation.SuppressLint
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
+import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.runBlocking
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -13,19 +15,17 @@ import retrofit2.converter.gson.GsonConverterFactory
 import javax.inject.Inject
 
 
-class LoginRepository @Inject constructor() {
-    @Inject
-    lateinit var  preferenceDataStore: PreferenceDataStore
+class LoginRepository @Inject constructor(var  preferenceDataStore: PreferenceDataStore) {
+
     var requestHeadersModel: RequestHeadersModel? = null
-    suspend  fun addDatatoStore(requestHeadersModel: RequestHeadersModel?) {
-
-
-            if (requestHeadersModel != null) {
-                preferenceDataStore.savetoDataStore(requestHeadersModel)
-            }
-
+     fun addDatatoStore(requestHeadersModel: RequestHeadersModel?) {
+     runBlocking(Dispatchers.IO) {
+         if (requestHeadersModel != null) {
+             preferenceDataStore.savetoDataStore(requestHeadersModel)
+         }
+     }
     }
-    suspend fun login(serverresponse: MutableLiveData<ServerResponseModel?>,email: String, pass: String)
+     fun login(serverresponse: MutableLiveData<ServerResponseModel?>,email: String, pass: String)
     {
         val retrofit = Retrofit.Builder()
             .baseUrl("https://staging.clientdex.com")
@@ -50,7 +50,7 @@ class LoginRepository @Inject constructor() {
                         headers.get("client").toString()
                     )
                     serverresponse.postValue(response.body())
-
+                    addDatatoStore(requestHeadersModel)
                 } else {
                     serverresponse.postValue(null)
                 }
