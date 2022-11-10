@@ -3,7 +3,7 @@
     android:shape="rectangle"
     >
 
-  <solid android:color="#2573D5"></solid>
+  <solid android:color="@color/loginbtnclr" />
     <corners
         android:bottomRightRadius="22dp"
         android:bottomLeftRadius="22dp"

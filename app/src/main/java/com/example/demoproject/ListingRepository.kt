@@ -3,124 +3,107 @@ package com.example.demoproject
 import android.annotation.SuppressLint
 import android.widget.Toast
 import androidx.lifecycle.MutableLiveData
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.flow.cancellable
-import kotlinx.coroutines.runBlocking
+import kotlinx.coroutines.flow.onEach
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
-import retrofit2.Retrofit
-import retrofit2.converter.gson.GsonConverterFactory
 import javax.inject.Inject
 
-class ListingRepository @Inject constructor(private val preferenceDataStore: PreferenceDataStore) {
+class ListingRepository @Inject constructor(
+    private val preferenceDataStore: PreferenceDataStore,
+    retrofitRepository: RetrofitRepository
+) {
     private val requestHeaders = HashMap<String, String>()
-    suspend fun getlist(mydata: MutableLiveData<ListingDataModel>,page:Int) {
+    private val retrofitAPI = retrofitRepository.getretrofitApi()
+    fun getlist(mydata: MutableLiveData<ListingDataModel>, page: Int) {
+        val call: Call<ListingDataModel> = retrofitAPI.allContacts(requestHeaders, page)
+        call.enqueue(object : Callback<ListingDataModel> {
+            override fun onResponse(
+                call: Call<ListingDataModel>,
+                response: Response<ListingDataModel>
+            ) {
 
-        preferenceDataStore.getFromDataStore().collect {
-            requestHeaders["access-token"] = it.access_token
-            requestHeaders["client"] = it.client
-            requestHeaders["uid"] = it.uid
-
-            val retrofit = Retrofit.Builder()
-                .baseUrl("https://staging.clientdex.com")
-                .addConverterFactory(GsonConverterFactory.create())
-                .build()
-            val retrofitAPI: RetrofitInterface =
-                retrofit.create(RetrofitInterface::class.java)
-            val call: Call<ListingDataModel> =
-                retrofitAPI.allContacts(requestHeaders,page)
-            call.enqueue(object : Callback<ListingDataModel> {
-                override fun onResponse(
-                    call: Call<ListingDataModel>,
-                    response: Response<ListingDataModel>
-                ) {
-
-                    if (response.isSuccessful) {
-                        if(page>0) {
-                            response.body()
-                                ?.let { mydata.value?.cardContactModels?.addAll(it.cardContactModels) }
-                        }
-                        else{
-                            mydata.postValue(response.body())
-                        }
+                if (response.isSuccessful) {
+                    if (page > 1) {
+                        response.body()
+                            ?.let { mydata.value?.cardContactModels?.addAll(it.cardContactModels) }
                     } else {
-                        Toast.makeText(
-                            MyApplication.getAppContext(),
-                            response.toString(),
-                            Toast.LENGTH_SHORT
-                        ).show()
+                        mydata.postValue(response.body())
                     }
-                }
-
-                @SuppressLint("SetTextI18n")
-                override fun onFailure(
-                    call: Call<ListingDataModel>,
-                    t: Throwable
-                ) {
-                    println(t.message.toString())
+                } else {
                     Toast.makeText(
                         MyApplication.getAppContext(),
-                        t.message.toString(),
+                        response.toString(),
                         Toast.LENGTH_SHORT
                     ).show()
-                    println(t.message.toString())
                 }
-            })
-            println("lllllllllllllllllllllllggggggg")
-        }
+            }
+
+            @SuppressLint("SetTextI18n")
+            override fun onFailure(
+                call: Call<ListingDataModel>,
+                t: Throwable
+            ) {
+                println(t.message.toString())
+                Toast.makeText(
+                    MyApplication.getAppContext(),
+                    t.message.toString(),
+                    Toast.LENGTH_SHORT
+                ).show()
+                println(t.message.toString())
+            }
+        })
     }
 
-    suspend fun searchByName(name: String?, mydata: MutableLiveData<ListingDataModel>,page:Int) {
-        preferenceDataStore.getFromDataStore().collect {
-            requestHeaders["access-token"] = it.access_token
-            requestHeaders["client"] = it.client
-            requestHeaders["uid"] = it.uid
-            val retrofit = Retrofit.Builder()
-                .baseUrl("https://staging.clientdex.com")
-                .addConverterFactory(GsonConverterFactory.create())
-                .build()
-            val retrofitAPI: RetrofitInterface =
-                retrofit.create(RetrofitInterface::class.java)
-            val call: Call<ListingDataModel> =
-                retrofitAPI.search(requestHeaders, name,page)
-            call.enqueue(object : Callback<ListingDataModel> {
-                override fun onResponse(
-                    call: Call<ListingDataModel>,
-                    response: Response<ListingDataModel>
-                ) {
+    fun searchByName(name: String?, mydata: MutableLiveData<ListingDataModel>, page: Int) {
+        val call: Call<ListingDataModel> =
+            retrofitAPI.search(requestHeaders, name, page)
+        call.enqueue(object : Callback<ListingDataModel> {
+            override fun onResponse(
+                call: Call<ListingDataModel>,
+                response: Response<ListingDataModel>
+            ) {
 
-                    if (response.isSuccessful) {
-                        mydata.postValue(response.body()!!)
-                        Toast.makeText(
-                            MyApplication.getAppContext(),
-                            "Successful",
-                            Toast.LENGTH_SHORT
-                        ).show()
-                    } else {
-                        Toast.makeText(
-                            MyApplication.getAppContext(),
-                            response.toString(),
-                            Toast.LENGTH_SHORT
-                        ).show()
-                    }
-                }
-
-                @SuppressLint("SetTextI18n")
-                override fun onFailure(
-                    call: Call<ListingDataModel>,
-                    t: Throwable
-                ) {
-                    t.also {
-                    }
-                    println(t.message.toString())
+                if (response.isSuccessful) {
+                    mydata.postValue(response.body()!!)
                     Toast.makeText(
                         MyApplication.getAppContext(),
-                        t.message.toString(),
+                        "Successful",
+                        Toast.LENGTH_SHORT
+                    ).show()
+                } else {
+                    Toast.makeText(
+                        MyApplication.getAppContext(),
+                        response.toString(),
                         Toast.LENGTH_SHORT
                     ).show()
                 }
-            })
+            }
+
+            @SuppressLint("SetTextI18n")
+            override fun onFailure(
+                call: Call<ListingDataModel>,
+                t: Throwable
+            ) {
+                println(t.message.toString())
+                Toast.makeText(
+                    MyApplication.getAppContext(),
+                    t.message.toString(),
+                    Toast.LENGTH_SHORT
+                ).show()
+            }
+        })
+
+    }
+
+    suspend fun collectFromDatastore() {
+        requestHeaders["Content-type"]="application/json; charset=UTF-8"
+        preferenceDataStore.getFromDataStore().onEach {  }.collect {
+            requestHeaders["access-token"] = it.access_token
+            requestHeaders["client"] = it.client
+            requestHeaders["uid"] = it.uid
+            println("Inside Collect")
         }
+        println("outside Collect")
     }
 }

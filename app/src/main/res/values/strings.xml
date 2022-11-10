@@ -13,4 +13,7 @@
     <string name="training">Training</string>
     <string name="events">Events</string>
     <string name="track_it">Track It</string>
+    <string name="upload">UPLOAD</string>
+    <string name="personal_number">PERSONAL NUMBER</string>
+    <string name="update_profile">Update Profile</string>
 </resources>

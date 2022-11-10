@@ -4,7 +4,11 @@ import android.content.Context
 import androidx.datastore.core.DataStore
 import androidx.datastore.preferences.core.*
 import androidx.datastore.preferences.preferencesDataStore
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.flowOf
+import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.flow.onEach
 
 
 class PreferenceDataStore(val context: Context) {
@@ -33,9 +37,10 @@ class PreferenceDataStore(val context: Context) {
         RequestHeadersModel(
             uid = it[UID] ?: "",
             access_token = it[ACCESSTOKEN] ?: "",
-            client = it[CLIENT] ?: ""
+            client = it[CLIENT] ?: "",
+            ContentType = "application/json; charset=UTF-8"
         )
-    }
+    }.onEach { }.flowOn(Dispatchers.Default)
     suspend fun saveLoginStatus(status:Boolean)
     {
         context.dataStore.edit {
@@ -44,7 +49,7 @@ class PreferenceDataStore(val context: Context) {
 
         }
     }
-    suspend fun getLoginStatus()= context.dataStore.data.map {
+    fun getLoginStatus()= context.dataStore.data.map {
            it[loginStatus] ?: false
     }
 
