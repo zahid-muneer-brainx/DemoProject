@@ -1,7 +1,5 @@
 package com.example.demoproject
 
-import android.annotation.SuppressLint
-import android.widget.Toast
 import androidx.lifecycle.MutableLiveData
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.runBlocking
@@ -14,18 +12,12 @@ class LoginRepository @Inject constructor(
     var preferenceDataStore: PreferenceDataStore,
     retrofitRepository: RetrofitRepository
 ) {
-
+    val failedResponse=MutableLiveData<String>()
     var requestHeadersModel: RequestHeadersModel? = null
     private val retrofitAPI = retrofitRepository.getretrofitApi()
-    fun addDatatoStore(requestHeadersModel: RequestHeadersModel?) {
-        runBlocking(Dispatchers.IO) {
-            if (requestHeadersModel != null) {
-                preferenceDataStore.savetoDataStore(requestHeadersModel)
-            }
-        }
-    }
 
-    fun login(serverresponse: MutableLiveData<ServerResponseModel?>, email: String, pass: String) {
+
+    fun login(serverResponse: MutableLiveData<ServerResponseModel?>, email: String, pass: String) {
         val dataModal = UserInfoModel(email, pass)
         val call: Call<ServerResponseModel?> = retrofitAPI.login(dataModal)
 
@@ -36,29 +28,33 @@ class LoginRepository @Inject constructor(
             ) {
 
                 if (response.isSuccessful) {
-                    val headers = response.headers()
-                    requestHeadersModel = RequestHeadersModel(
-                        "application/json; charset=UTF-8",
-                        headers.get("uid").toString(),
-                        headers.get("access-token").toString(),
-                        headers.get("client").toString(),
-
+                    val headers=response.headers()
+                    requestHeadersModel= RequestHeadersModel(
+                    "application/json; charset=UTF-8",
+                    headers.get("uid").toString(),
+                    headers.get("access-token").toString(),
+                        headers.get("client").toString()
                     )
-                    serverresponse.postValue(response.body())
-                    addDatatoStore(requestHeadersModel)
+                    println("After login: $requestHeadersModel")
+                    serverResponse.postValue(response.body())
+                    addDataToStore(requestHeadersModel)
                 } else {
-                    serverresponse.postValue(null)
+                    serverResponse.postValue(null)
                 }
             }
 
-            @SuppressLint("SetTextI18n")
+
             override fun onFailure(call: Call<ServerResponseModel?>, t: Throwable) {
-                Toast.makeText(
-                    MyApplication.getAppContext(),
-                    t.message.toString(),
-                    Toast.LENGTH_SHORT
-                )
+                failedResponse.postValue(t.message.toString())
             }
         })
     }
+    fun addDataToStore(requestHeadersModel: RequestHeadersModel?) {
+        runBlocking(Dispatchers.IO) {
+            if (requestHeadersModel != null) {
+                preferenceDataStore.savetoDataStore(requestHeadersModel)
+            }
+        }
+    }
+
 }

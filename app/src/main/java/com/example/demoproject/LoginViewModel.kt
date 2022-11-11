@@ -22,12 +22,13 @@ import javax.inject.Inject
 class LoginViewModel @Inject constructor (private var loginRepository: LoginRepository) :
     ViewModel() {
 
-    val serverresponse: MutableLiveData<ServerResponseModel?> = MutableLiveData()
+    val serverResponse: MutableLiveData<ServerResponseModel?> = MutableLiveData()
+    var failedResponse=MutableLiveData<String>()
     fun login(email: String, pass: String) {
 
         viewModelScope.launch() {
-            loginRepository.login(serverresponse, email, pass)
-            println("Headers: "+loginRepository.requestHeadersModel.toString())
+            loginRepository.login(serverResponse, email, pass)
+            failedResponse=loginRepository.failedResponse
         }
 
 

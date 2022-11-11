@@ -15,23 +15,23 @@ import retrofit2.converter.gson.GsonConverterFactory
 import javax.inject.Inject
 
 @HiltViewModel
-class UpdateProfileViewModel @Inject constructor(private val preferenceDataStore: PreferenceDataStore) :
+class UpdateProfileViewModel @Inject constructor(private val preferenceDataStore: PreferenceDataStore,
+                                                 retrofitRepository: RetrofitRepository) :
     ViewModel() {
     val serverresponse: MutableLiveData<ServerResponseModel?> = MutableLiveData()
     val requestHeaders = HashMap<String, String>()
+    val failedResponse = MutableLiveData<String>()
+    private val  retrofitAPI=retrofitRepository.getretrofitApi()
     fun updateProfile(updateProfileInfoModel: UpdateProfileInfoModel) {
         viewModelScope.launch {
             preferenceDataStore.getFromDataStore().collect {
                 requestHeaders["access-token"] = it.access_token
                 requestHeaders["client"] = it.client
                 requestHeaders["uid"] = it.uid
-                val retrofit = Retrofit.Builder()
-                    .baseUrl("https://staging.clientdex.com")
-                    .addConverterFactory(GsonConverterFactory.create())
-                    .build()
-                val retrofitAPI: RetrofitInterface =
-                    retrofit.create(RetrofitInterface::class.java)
-                val call: Call<ServerResponseModel?> = retrofitAPI.update(requestHeaders, updateProfileInfoModel)
+            }
+            viewModelScope.launch {
+                val call: Call<ServerResponseModel?> =
+                    retrofitAPI.update(requestHeaders, updateProfileInfoModel)
                 call.enqueue(object : Callback<ServerResponseModel?> {
                     override fun onResponse(
                         call: Call<ServerResponseModel?>,
@@ -50,15 +50,7 @@ class UpdateProfileViewModel @Inject constructor(private val preferenceDataStore
 
                     @SuppressLint("SetTextI18n")
                     override fun onFailure(call: Call<ServerResponseModel?>, t: Throwable) {
-                        t.also {
-                            Toast.makeText(
-                                MyApplication.getAppContext(),
-                                t.message.toString(),
-                                Toast.LENGTH_SHORT
-                            ).show()
-                        }
-
-
+                        failedResponse.postValue(t.message.toString())
                     }
                 })
             }

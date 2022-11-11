@@ -93,7 +93,7 @@ class UploadFragment @Inject constructor() : Fragment() {
                 preferenceDataStore.saveLoginStatus(false)
             }
             activity?.let {
-                val intent = Intent(it, MainActivity::class.java)
+                val intent = Intent(it, LoginActivity::class.java)
                 it.startActivity(intent)
                 Toast.makeText(requireContext(), "Logout", Toast.LENGTH_SHORT).show()
             }

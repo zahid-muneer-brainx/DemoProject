@@ -16,4 +16,9 @@
     <string name="upload">UPLOAD</string>
     <string name="personal_number">PERSONAL NUMBER</string>
     <string name="update_profile">Update Profile</string>
+    <string name="name">NAME</string>
+    <string name="zahid_muneer">Zahid Muneer</string>
+    <string name="_1_613_704_8836">+1 (613) 704-8836</string>
+    <string name="logout">LogOut</string>
+    <string name="click_to_choose_image">click to choose image</string>
 </resources>

@@ -10,8 +10,9 @@ import javax.inject.Inject
 
 @HiltViewModel
 class ListingViewModel @Inject constructor(private var listingRepository: ListingRepository) :
-    ViewModel() {
-
+    ViewModel()
+{
+    var failedResponse=MutableLiveData<String>()
     var recyclerDataArrayList = MutableLiveData<ListingDataModel>()
     var searchDataArrayList = MutableLiveData<ListingDataModel>()
     fun getList(page: Int) {
@@ -20,8 +21,9 @@ class ListingViewModel @Inject constructor(private var listingRepository: Listin
             println("Job canceled....")
         }
         viewModelScope.launch(Dispatchers.IO) {
-            listingRepository.getlist(recyclerDataArrayList, page)
+            listingRepository.getList(recyclerDataArrayList, page)
             println("Inside getList function")
+            failedResponse=listingRepository.failedResponse
         }
     }
 
@@ -33,6 +35,7 @@ class ListingViewModel @Inject constructor(private var listingRepository: Listin
 
         viewModelScope.launch(Dispatchers.IO) {
             listingRepository.searchByName(name, searchDataArrayList, page)
+            failedResponse=listingRepository.failedResponse
         }
     }
 }

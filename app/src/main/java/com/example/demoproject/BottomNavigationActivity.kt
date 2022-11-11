@@ -10,7 +10,7 @@ import dagger.hilt.android.HiltAndroidApp
 import javax.inject.Inject
 
 @AndroidEntryPoint
-class MainActivity2 : AppCompatActivity() {
+class BottomNavigationActivity : AppCompatActivity() {
     lateinit var binding: ActivityMain2Binding
 
     @Inject

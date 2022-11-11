@@ -1,17 +1,13 @@
 package com.example.demoproject
 
 import android.content.Intent
-import android.content.SharedPreferences
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Button
-import android.widget.EditText
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
-import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import com.example.demoproject.databinding.FragmentLoginBinding
 import dagger.hilt.android.AndroidEntryPoint
@@ -31,6 +27,13 @@ class LoginFragment @Inject constructor() : Fragment() {
 
         super.onViewCreated(view, savedInstanceState)
         responseObserver(model)
+        model.failedResponse.observe(viewLifecycleOwner) {
+            Toast.makeText(
+                requireContext(),
+                it,
+                Toast.LENGTH_SHORT
+            ).show()
+        }
         binding.loginbtn.setOnClickListener {
 
 
@@ -58,9 +61,9 @@ class LoginFragment @Inject constructor() : Fragment() {
     }
 
     private fun responseObserver(model: LoginViewModel) {
-        model.serverresponse.observe(viewLifecycleOwner) { serverResponse ->
+        model.serverResponse.observe(viewLifecycleOwner) { serverResponse ->
             if (serverResponse == null) {
-                Toast.makeText(requireContext(), "Logged in Failure", Toast.LENGTH_SHORT).show()
+                Toast.makeText(requireContext(), "Invalid Email or Password", Toast.LENGTH_SHORT).show()
             } else {
 
                 Toast.makeText(
@@ -72,7 +75,7 @@ class LoginFragment @Inject constructor() : Fragment() {
                     preferenceDataStore.saveLoginStatus(true)
                 }
                 activity?.let {
-                    val intent = Intent(it, MainActivity2::class.java)
+                    val intent = Intent(it, BottomNavigationActivity::class.java)
                     it.startActivity(intent)
                 }
             }

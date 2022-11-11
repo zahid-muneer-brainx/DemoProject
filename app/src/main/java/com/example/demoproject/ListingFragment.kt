@@ -16,49 +16,51 @@ import javax.inject.Inject
 
 @AndroidEntryPoint
 class ListingFragment @Inject constructor() : Fragment() {
-
-
     private val model: ListingViewModel by viewModels()
-    private var recyclerViewAdapter: ListingViewAdapter? = null
+    lateinit var recyclerViewAdapter: ListingViewAdapter
     private lateinit var binding: FragmentSearchBinding
-    private var page=1
+    private var page = 1
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
+        model.getList(page)
         model.recyclerDataArrayList.observe(viewLifecycleOwner) {
-            upload()
+            upload(it)
         }
         model.searchDataArrayList.observe(viewLifecycleOwner) {
-            search()
+            search(it)
+        }
+        model.failedResponse.observe(viewLifecycleOwner) {
+            requestFailedMessage(it)
         }
         binding.sv1.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
             override fun onQueryTextSubmit(query: String?): Boolean {
-                model.searchByName(query,page)
+                model.searchByName(query, page)
                 println(query)
                 return false
             }
+
             override fun onQueryTextChange(newText: String?): Boolean {
-                model.searchByName(newText,page)
+                model.searchByName(newText, page)
                 return false
             }
         })
-    binding.idNestedSV.setOnScrollChangeListener(NestedScrollView.OnScrollChangeListener { v, scrollX, scrollY, oldScrollX, oldScrollY ->
-        if (scrollY == v.getChildAt(0).measuredHeight - v.measuredHeight) {
-            page++
-            if(page < (model.recyclerDataArrayList.value?.metaModel?.total_pages?.toInt() ?: 1)) {
-                model.getList(page)
-                upload()
+        binding.idNestedSV.setOnScrollChangeListener(NestedScrollView.OnScrollChangeListener { v, scrollX, scrollY, oldScrollX, oldScrollY ->
+            if (scrollY == v.getChildAt(0).measuredHeight - v.measuredHeight) {
+                page++
+                if (page < (model.recyclerDataArrayList.value?.metaModel?.total_pages?.toInt()
+                        ?: 1)
+                ) {
+                    model.getList(page)
+                } else {
+                    Toast.makeText(requireContext(), "No More Contacts", Toast.LENGTH_SHORT).show()
+                }
             }
-            else{
-                Toast.makeText(requireContext(),"No More Contacts",Toast.LENGTH_SHORT).show()
-            }
-        }
-    })
-        println("when is printed")
-        model.getList(page)
-        println("After function")
+        })
     }
+
+    private fun requestFailedMessage(it: String?) =
+        Toast.makeText(requireContext(), it, Toast.LENGTH_SHORT).show()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -68,26 +70,26 @@ class ListingFragment @Inject constructor() : Fragment() {
         return binding.root
     }
 
-    private fun upload() {
+    private fun upload(listingDataModel: ListingDataModel) {
 
 
-            for (i in model.recyclerDataArrayList.value?.cardContactModels?.indices!!) {
-                recyclerViewAdapter = ListingViewAdapter(model.recyclerDataArrayList.value!!)
-                val manager = LinearLayoutManager(requireContext())
-                binding.RTview.layoutManager = manager
-                binding.RTview.adapter = recyclerViewAdapter
-            }
+        for (i in listingDataModel.cardContactModels.indices) {
+            recyclerViewAdapter = ListingViewAdapter(listingDataModel)
+            val manager = LinearLayoutManager(requireContext())
+            binding.RTview.layoutManager = manager
+            binding.RTview.adapter = recyclerViewAdapter
+        }
 
     }
 
-    private fun search() {
-            for (i in model.searchDataArrayList.value?.cardContactModels?.indices!!) {
-                recyclerViewAdapter =
-                    ListingViewAdapter(model.searchDataArrayList.value!!)
-                val manager = LinearLayoutManager(requireContext())
-                binding.RTview.layoutManager = manager
-                binding.RTview.adapter = recyclerViewAdapter
-            }
+    private fun search(listingDataModel: ListingDataModel) {
+        for (i in listingDataModel.cardContactModels.indices) {
+            recyclerViewAdapter =
+                ListingViewAdapter(listingDataModel)
+            val manager = LinearLayoutManager(requireContext())
+            binding.RTview.layoutManager = manager
+            binding.RTview.adapter = recyclerViewAdapter
+        }
 
     }
 }

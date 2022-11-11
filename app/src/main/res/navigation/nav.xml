@@ -6,6 +6,6 @@
 
     <activity
         android:id="@+id/mainActivity2"
-        android:name="com.example.demoproject.MainActivity2"
+        android:name="com.example.demoproject.BottomNavigationActivity"
         android:label="MainActivity2" />
 </navigation>

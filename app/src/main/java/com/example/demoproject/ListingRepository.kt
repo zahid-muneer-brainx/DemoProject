@@ -15,7 +15,9 @@ class ListingRepository @Inject constructor(
 ) {
     private val requestHeaders = HashMap<String, String>()
     private val retrofitAPI = retrofitRepository.getretrofitApi()
-    fun getlist(mydata: MutableLiveData<ListingDataModel>, page: Int) {
+    val failedResponse=MutableLiveData<String>()
+    fun getList(myData: MutableLiveData<ListingDataModel>, page: Int) {
+        println("Headers: $requestHeaders")
         val call: Call<ListingDataModel> = retrofitAPI.allContacts(requestHeaders, page)
         call.enqueue(object : Callback<ListingDataModel> {
             override fun onResponse(
@@ -26,9 +28,9 @@ class ListingRepository @Inject constructor(
                 if (response.isSuccessful) {
                     if (page > 1) {
                         response.body()
-                            ?.let { mydata.value?.cardContactModels?.addAll(it.cardContactModels) }
+                            ?.let { myData.value?.cardContactModels?.addAll(it.cardContactModels) }
                     } else {
-                        mydata.postValue(response.body())
+                        myData.postValue(response.body())
                     }
                 } else {
                     Toast.makeText(
@@ -44,13 +46,7 @@ class ListingRepository @Inject constructor(
                 call: Call<ListingDataModel>,
                 t: Throwable
             ) {
-                println(t.message.toString())
-                Toast.makeText(
-                    MyApplication.getAppContext(),
-                    t.message.toString(),
-                    Toast.LENGTH_SHORT
-                ).show()
-                println(t.message.toString())
+               failedResponse.postValue(t.message.toString())
             }
         })
     }
@@ -85,12 +81,7 @@ class ListingRepository @Inject constructor(
                 call: Call<ListingDataModel>,
                 t: Throwable
             ) {
-                println(t.message.toString())
-                Toast.makeText(
-                    MyApplication.getAppContext(),
-                    t.message.toString(),
-                    Toast.LENGTH_SHORT
-                ).show()
+                failedResponse.postValue(t.message.toString())
             }
         })
 
@@ -102,8 +93,6 @@ class ListingRepository @Inject constructor(
             requestHeaders["access-token"] = it.access_token
             requestHeaders["client"] = it.client
             requestHeaders["uid"] = it.uid
-            println("Inside Collect")
         }
-        println("outside Collect")
     }
 }

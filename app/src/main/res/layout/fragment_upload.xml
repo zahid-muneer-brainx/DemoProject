@@ -7,46 +7,61 @@
     android:background="#D4DAE4"
     tools:context=".UploadFragment">
 
-    <!-- TODO: Update blank fragment layout -->
 
     <TextView
         android:id="@+id/textView8"
-        android:layout_width="0dp"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="52dp"
+        android:layout_marginStart="48dp"
+        android:layout_marginTop="34dp"
         android:text="@string/update_profile"
         android:textSize="25sp"
+
         android:textStyle="bold"
-        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <FrameLayout
-        android:id="@+id/frameLayout2"
-        android:layout_width="75dp"
-        android:layout_height="0dp"
-        android:layout_gravity="center_horizontal"
-        android:layout_marginTop="88dp"
-        android:layout_marginBottom="193dp"
-        app:layout_constraintBottom_toTopOf="@+id/textView9"
-        app:layout_constraintStart_toStartOf="@+id/textView8"
-        app:layout_constraintTop_toTopOf="parent">
 
-    </FrameLayout>
+    <de.hdodenhof.circleimageview.CircleImageView
+        android:id="@+id/imagedis"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:src="@drawable/ic_baseline_account_circle_24"
+        app:civ_border_color="#FF000000"
+        app:civ_border_width="4dp"
+        app:layout_constraintBottom_toTopOf="@+id/camera"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/camera" />
+
+
+    <ImageView
+        android:id="@+id/camera"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom|end"
+        android:layout_marginStart="30dp"
+        android:layout_marginTop="59dp"
+        android:contentDescription="@string/click_to_choose_image"
+        android:src="@drawable/ic_group_3915"
+        app:layout_constraintStart_toStartOf="@+id/imagedis"
+        app:layout_constraintTop_toBottomOf="@+id/textView8">
+
+    </ImageView>
 
     <TextView
         android:id="@+id/textView9"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
 
+        android:layout_marginStart="30dp"
         android:layout_marginBottom="14dp"
-        android:text="NAME"
+        android:text="@string/name"
         android:textColor="#9929304D"
-        android:textSize="12dp"
+        android:textSize="12sp"
         app:layout_constraintBottom_toTopOf="@+id/name"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/frameLayout2">
+        app:layout_constraintStart_toStartOf="parent">
 
     </TextView>
 
@@ -54,33 +69,32 @@
         android:id="@+id/name"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="52dp"
+        android:layout_marginTop="242dp"
+        android:autofillHints="name"
         android:background="#FFFFFF"
-        android:hint="Zahid Muneer"
+        android:hint="@string/zahid_muneer"
+        android:inputType="text"
         android:paddingStart="20dp"
         android:paddingTop="27dp"
+        android:paddingEnd="20dp"
         android:paddingBottom="18dp"
-
         android:textColor="@color/welcometextcolor"
-        app:layout_constraintBottom_toTopOf="@+id/textView10"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView9">
+        app:layout_constraintTop_toTopOf="parent">
 
     </EditText>
-
 
     <TextView
         android:id="@+id/textView10"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
 
-        android:layout_marginBottom="15dp"
+        android:layout_marginStart="30dp"
+        android:layout_marginTop="20dp"
         android:text="@string/personal_number"
         android:textColor="#9929304D"
         android:textSize="12sp"
-        app:layout_constraintBottom_toTopOf="@+id/number"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/name">
 
@@ -90,14 +104,16 @@
         android:id="@+id/number"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="315dp"
+        android:layout_marginTop="21dp"
+        android:autofillHints="phone"
         android:background="#FFFFFF"
-        android:hint="+1 (613) 704-8836"
+        android:hint="@string/_1_613_704_8836"
+        android:inputType="number"
         android:paddingStart="20dp"
         android:paddingTop="27dp"
+        android:paddingEnd="20dp"
         android:paddingBottom="18dp"
         android:textColor="#29304D"
-        app:layout_constraintBottom_toTopOf="@+id/upbutton"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textView10">
@@ -109,65 +125,38 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
-        android:layout_marginStart="151dp"
-        android:layout_marginTop="167dp"
 
-        android:layout_marginBottom="169dp"
+        android:layout_marginTop="39dp"
         android:background="@drawable/login_background"
-        android:text="LogOut"
-        android:textColor="#FFFFFF"
-        app:layout_constraintBottom_toTopOf="@+id/upbutton"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/number">
-
-
-    </androidx.appcompat.widget.AppCompatButton>
-
-    <androidx.appcompat.widget.AppCompatButton
-        android:id="@+id/upbutton"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center_horizontal|center_vertical"
-
-        android:layout_marginStart="34dp"
-        android:layout_marginEnd="34dp"
-
-        android:layout_marginBottom="12dp"
-        android:background="@drawable/login_background"
-        android:text="@string/upload"
-        android:textColor="#FFFFFF"
-        app:layout_constraintBottom_toBottomOf="parent"
+        android:text="@string/logout"
+        android:textColor="@color/white"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/number">
 
     </androidx.appcompat.widget.AppCompatButton>
 
-    <de.hdodenhof.circleimageview.CircleImageView
-        android:id="@+id/imagedis"
-        android:layout_width="wrap_content"
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/upbutton"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_centerInParent="true"
-        android:layout_marginStart="151dp"
-        android:layout_marginBottom="5dp"
-        android:src="@drawable/ic_baseline_account_circle_24"
-        app:civ_border_color="#FF000000"
-        app:civ_border_width="4dp"
-        app:layout_constraintBottom_toBottomOf="@+id/camera"
-        app:layout_constraintStart_toStartOf="@+id/textView8" />
+        android:layout_gravity="center_horizontal|center_vertical"
 
-    <ImageView
-        android:id="@+id/camera"
-        android:layout_width="24.66dp"
-        android:layout_height="24.66dp"
-        android:layout_gravity="bottom|right"
-        android:layout_marginStart="30dp"
-        android:layout_marginTop="86dp"
-        android:layout_marginBottom="87dp"
-        android:src="@drawable/ic_group_3915"
-        app:layout_constraintBottom_toBottomOf="@+id/textView9"
-        app:layout_constraintStart_toStartOf="@+id/imagedis"
-        app:layout_constraintTop_toBottomOf="@+id/textView8">
+        android:layout_marginBottom="16dp"
+        android:background="@drawable/login_background"
+        android:text="@string/upload"
+        android:textColor="#FFFFFF"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent">
 
-    </ImageView>
+    </androidx.appcompat.widget.AppCompatButton>
+
+
 </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+
+
+
+
