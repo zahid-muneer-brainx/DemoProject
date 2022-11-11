@@ -7,8 +7,9 @@
     <color name="teal_700">#FF018786</color>
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
-    <color name="loginbtnclr">#2573D5</color>
-    <color name="edittextcolor">#929498</color>
-    <color name="welcometextcolor">#29304D</color>
-    <color name="msgtextcolor">#5D687E</color>
+    <color name="login_btn_clr">#2573D5</color>
+    <color name="edit_text_color">#929498</color>
+    <color name="welcome_text_color">#29304D</color>
+    <color name="welcome_text_color_op">#9929304D</color>
+    <color name="msg_text_color">#5D687E</color>
 </resources>
